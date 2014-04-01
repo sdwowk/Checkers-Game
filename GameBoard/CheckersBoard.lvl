@@ -1,0 +1,31 @@
+Teams: 2
+Tiles: assets/tiles.png
+Tile size: 100x100
+Map: GameBoard/CheckersBoard.gif
+
+UNITS START
+Pawn 0 22 22
+Pawn 0 23 23
+Pawn 0 21 22
+Pawn 0 19 20
+Pawn 0 20 22
+Pawn 0 18 22
+Pawn 0 21 20
+Pawn 0 21 19
+Pawn 0 18 21
+Pawn 0 27 20
+Pawn 0 13 27
+Pawn 0 27 26
+Pawn 1 27 27
+Pawn 1 26 27
+Pawn 1 9 6 
+Pawn 1 11 7 
+Pawn 1 8 8 
+Pawn 1 11 9
+Pawn 1 9 8 
+Pawn 1 10 7
+Pawn 1 12 7
+Pawn 1 9 10
+Pawn 1 10 9
+Pawn 1 2 10
+UNITS END
