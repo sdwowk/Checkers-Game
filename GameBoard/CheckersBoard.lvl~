@@ -1,6 +1,6 @@
 Teams: 2
 Tiles: assets/tiles.png
-Tile size: 20x20
+Tile size: 80x80
 Map: GameBoard/CheckersBoard.gif
 
 UNITS START

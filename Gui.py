@@ -1,7 +1,8 @@
 import sys, pygame
 import random
-import tiles, checkers
+import tiles,checkers
 
+from checkers.pieces import *
 from pygame.sprite import LayeredUpdates
 from collections import namedtuple
 
@@ -189,14 +190,17 @@ class GUI(LayeredUpdates):
             unit_name = line[0]
             unit_team = int(line[1])
             unit_x, unit_y = int(line[2]), int(line[3])
-            
-            if not unit_name in unit.unit_types:
+            """            
+            if not unit_name in checkers.unit_types:
                 raise Exception("No unit of name {} found!".format(unit_name))
-            new_unit = unit.unit_types[unit_name](team = unit_team,
-                                                  tile_x = unit_x,
-                                                  tile_y = unit_y,
+            """
+            tile_x = unit_x
+            tile_y = unit_y
+            new_unit = checkers.unit_types[unit_name](team = unit_team,
+                                                      tile_x = unit_x, 
+                                                      tile_y = unit_y,
                                                   activate = True)
-            
+                  
             # Add the unit to the update group and set its display rect
             self.update_unit_rect(new_unit)
             
@@ -278,9 +282,9 @@ class GUI(LayeredUpdates):
         LayeredUpdates.draw(self, self.screen)
         
         # draw units
-        for u in base_unit.BaseUnit.active_units:
+        for u in Pieces.active_units:
             self.update_unit_rect(u)
-        base_unit.BaseUnit.active_units.draw(self.screen)
+        Pieces.active_units.draw(self.screen)
         
         # If there's a selected unit, outline it
         if self.sel_unit:
@@ -288,7 +292,7 @@ class GUI(LayeredUpdates):
                 self.screen,
                 self.sel_unit.rect,
                 SELECT_COLOR)
-                
+        """
         # Mark potential targets
         for tile_pos in self._attackable_tiles:
             screen_pos = self.map.screen_coords(tile_pos)
@@ -297,7 +301,7 @@ class GUI(LayeredUpdates):
         
         # Draw the status bar
         self.draw_bar()
-        
+        """
         # Draw the win message
         if self.mode == Modes.GameOver:
             # Determine the message
@@ -449,5 +453,13 @@ class GUI(LayeredUpdates):
         # advance turn
         self.current_turn += 1
 
+    def update_unit_rect(self, unit):
+        """
+        Scales a unit's display rectangle to screen coordiantes.
+        """
+        x, y = unit.tile_x, unit.tile_y
+        screen_x, screen_y = self.map.screen_coords((x, y))
+        unit.rect.x = screen_x
+        unit.rect.y = screen_y
     def Simulation_pressed(self):
         pass
