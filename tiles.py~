@@ -23,7 +23,7 @@ class TileMap(Sprite):
     A class which renders a grid of tiles from a spritesheet.
     """
     
-    def __init__(self, tile_width, tile_height):
+    def __init__(self, sheet_name, tile_width, tile_height):
         """
         sheet_name: the filename of the sprite sheet to use
         tile_width: the width of each tile, in pixels
@@ -55,7 +55,7 @@ class TileMap(Sprite):
         >>> t._tile_count()
         25
         """
-        return self._map_width * self._map_height
+        return self._map_width / self._tile_width
         
     def _tile_position(self, index):
         """
@@ -126,8 +126,8 @@ class TileMap(Sprite):
         """
         # Create the empty surface
         self._base_image = pygame.Surface(
-            (self._tile_width * self._map_width,
-            self._tile_height * self._map_height)
+            (self._tile_width * 8,
+            self._tile_height * 8)
         )
         
         # draw in each tile
@@ -190,13 +190,15 @@ class TileMap(Sprite):
         # Load in the map image.
         map_image = pygame.image.load(filename)
         self._map_width, self._map_height = map_image.get_size()
-        self.rect.w = self._map_width * self._tile_width
-        self.rect.h = self._map_height * self._tile_height
+        self._map_width = self._map_width * 20
+        self._map_height = self._map_height * 20
+        self.rect.w = self._map_width * 20
+        self.rect.h = self._map_height * 20
         
         # Go through the image adding tiles
         map_tiles = []
-        for y in range(map_image.get_height()):
-            for x in range(map_image.get_width()):
+        for y in range(8):
+            for x in range(8):
                 # The tile number corresponds to the pixel colour index
                 tiles.append(map_image.get_at_mapped((x, y)))
         
@@ -225,10 +227,8 @@ class TileMap(Sprite):
         (2, 1)
         """
         x, y = screen_coords
-        return (
-            math.floor((x - self.rect.left) / self._tile_width),
-            math.floor((y - self.rect.top) / self._tile_height)
-        )
+        return math.floor((x - self.rect.left) / self._tile_width), math.floor((y - self.rect.top) / self._tile_height)
+        
         
     def screen_coords(self, tile_coords):
         """

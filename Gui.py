@@ -7,7 +7,7 @@ from pygame.sprite import LayeredUpdates
 from collections import namedtuple
 
 MAP_WIDTH = 640
-BAR_WIDTH = 200
+BAR_WIDTH = 160
 BUTTON_HEIGHT = 50
 CENTER = 100
 
@@ -169,7 +169,7 @@ class GUI(LayeredUpdates):
         
         # Create the tile map
         self.map = tiles.TileMap(tile_filename, tile_w, tile_h)
-
+        
         self.map.load_from_file(map_filename)
         self.add(self.map)
         
@@ -182,6 +182,8 @@ class GUI(LayeredUpdates):
             if line == "":
                 raise Exception ("Expected unit definitions")
         line = map_file.readline()
+        #Creating a list for the new units
+        new_unit = []
         
         # Create the units
         while line.find("UNITS END") < 0:
@@ -190,23 +192,13 @@ class GUI(LayeredUpdates):
             unit_name = line[0]
             unit_team = int(line[1])
             unit_x, unit_y = int(line[2]), int(line[3])
-            """            
-            if not unit_name in checkers.unit_types:
-                raise Exception("No unit of name {} found!".format(unit_name))
-            """
-            tile_x = unit_x
-            tile_y = unit_y
-            new_unit = checkers.unit_types[unit_name](team = unit_team,
-                                                      tile_x = unit_x, 
-                                                      tile_y = unit_y,
-                                                  activate = True)
-                  
-            # Add the unit to the update group and set its display rect
-            self.update_unit_rect(new_unit)
             
+            new_unit.append((unit_team,unit_x, unit_y, True))
+                        
             line = map_file.readline()
             if line == "":
                 raise Exception ("Expected end of unit definitions")
+        return new_unit
 
     def on_click(self, e):
         """
@@ -214,8 +206,7 @@ class GUI(LayeredUpdates):
         e is the click event.
         """
         # Don't react when in move, attack or game over mode.
-        if (self.mode == Modes.Moving or
-            self.mode == Modes.GameOver):
+        if (self.mode == Modes.GameOver):
             return
         
         # make sure we have focus and that it was the left mouse button
@@ -226,10 +217,9 @@ class GUI(LayeredUpdates):
             # If this is in the map, we're dealing with units or tiles
             if self.map.rect.collidepoint(e.pos):
                 # Get the tile's position
-                to_tile_pos = self.map.tile_coords(e.pos)
+                tile_x, tile_y = self.map.tile_coords(e.pos)
 
-                # get the unit at the mouseclick
-                unit = self.get_unit_at_screen_pos(e.pos)
+                return tile_x, tile_y
                 
                 if unit:
                     # clicking the same unit again deselects it and, if
@@ -283,7 +273,7 @@ class GUI(LayeredUpdates):
         
         # draw units
         for u in Pieces.active_units:
-            self.update_unit_rect(u)
+            u.rect.x,u.rect.y = self.update_unit_rect(u)
         Pieces.active_units.draw(self.screen)
         
         # If there's a selected unit, outline it
@@ -292,16 +282,10 @@ class GUI(LayeredUpdates):
                 self.screen,
                 self.sel_unit.rect,
                 SELECT_COLOR)
-        """
-        # Mark potential targets
-        for tile_pos in self._attackable_tiles:
-            screen_pos = self.map.screen_coords(tile_pos)
-            self.draw_reticle(screen_pos)
-            
-        
-        # Draw the status bar
-        self.draw_bar()
-        """
+
+        for i in self.buttons:
+            self.draw_bar_button(i)
+
         # Draw the win message
         if self.mode == Modes.GameOver:
             # Determine the message
@@ -457,9 +441,14 @@ class GUI(LayeredUpdates):
         """
         Scales a unit's display rectangle to screen coordiantes.
         """
+        rect = []
         x, y = unit.tile_x, unit.tile_y
         screen_x, screen_y = self.map.screen_coords((x, y))
-        unit.rect.x = screen_x
-        unit.rect.y = screen_y
+        return screen_x, screen_y
     def Simulation_pressed(self):
         pass
+
+    def draw_path(self, path):
+        # Highlight those squares
+        self.map.set_highlight(
+            "move", MOVE_COLOR_A, MOVE_COLOR_B, self._movable_tiles)

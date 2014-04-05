@@ -6,7 +6,7 @@ from checkers.pieces import *
 from pygame.sprite import LayeredUpdates
 from collections import namedtuple
 
-MAP_WIDTH = 840
+MAP_WIDTH = 640
 BAR_WIDTH = 200
 BUTTON_HEIGHT = 50
 CENTER = 100
@@ -183,6 +183,7 @@ class GUI(LayeredUpdates):
                 raise Exception ("Expected unit definitions")
         line = map_file.readline()
         
+	new_unit = []
         # Create the units
         while line.find("UNITS END") < 0:
             line = line.rstrip()
@@ -196,10 +197,9 @@ class GUI(LayeredUpdates):
             """
             tile_x = unit_x
             tile_y = unit_y
-            new_unit = checkers.unit_types[unit_name](team = unit_team,
-                                                      tile_x = unit_x, 
-                                                      tile_y = unit_y,
-                                                  activate = True)
+            new_unit.append((team = unit_team, tile_x = unit_x, 
+                                                  tile_y = unit_y,
+                                                  activate = True))
                   
             # Add the unit to the update group and set its display rect
             self.update_unit_rect(new_unit)
@@ -207,6 +207,7 @@ class GUI(LayeredUpdates):
             line = map_file.readline()
             if line == "":
                 raise Exception ("Expected end of unit definitions")
+	return new_unit
 
     def on_click(self, e):
         """
@@ -214,8 +215,7 @@ class GUI(LayeredUpdates):
         e is the click event.
         """
         # Don't react when in move, attack or game over mode.
-        if (self.mode == Modes.Moving or
-            self.mode == Modes.GameOver):
+        if (self.mode == Modes.GameOver):
             return
         
         # make sure we have focus and that it was the left mouse button
@@ -226,10 +226,9 @@ class GUI(LayeredUpdates):
             # If this is in the map, we're dealing with units or tiles
             if self.map.rect.collidepoint(e.pos):
                 # Get the tile's position
-                to_tile_pos = self.map.tile_coords(e.pos)
+                tile_x, tile_y = self.map.tile_coords(e.pos)
 
-                # get the unit at the mouseclick
-                unit = self.get_unit_at_screen_pos(e.pos)
+                return tile_x, tile_y
                 
                 if unit:
                     # clicking the same unit again deselects it and, if

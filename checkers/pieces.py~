@@ -4,13 +4,12 @@ from pygame.sprite import Sprite
 FRAME_MOVE_SPEED = 3/20
 SIZE = 20
 
-class piece(Sprite):
+class Pieces(Sprite):
     """
     Representation of checker units that contain all the rules for movement.
     This just handles rules of movement, jumping and position on the map. 
     """
     active_units = pygame.sprite.LayeredUpdates()
-    sprite = pygame.image.load("assets/Pawns.png")
 
     #check if we need angle
     def __init__(self, team = -1, tile_x = None, tile_y = None, activate = False):
@@ -28,7 +27,7 @@ class piece(Sprite):
         self.turn_state = [False]
 
         #set required pygame things.
-        self.image = None
+        self.image = pygame.image.load("assets/Pawns.png")
         self.rect = pygame.Rect(0, 0, SIZE, SIZE)
         self._update_image()
         
@@ -42,7 +41,7 @@ class piece(Sprite):
         is present.
         """
         #check to have position in tulbe or two seperate variables
-        for u in piece.active_units:
+        for u in Pieces.active_units:
             if (u.tile_x, u.tile_y) == pos:
                 return u
             
@@ -97,7 +96,7 @@ class piece(Sprite):
         """
         if not self._active:
             self._active = True
-            piece.active_units.add(self)
+            Pieces.active_units.add(self)
     
     def deactivate(self):
         """
@@ -105,7 +104,7 @@ class piece(Sprite):
         """
         if self._active:
             self._active = False
-            piece.active_units.remove(self)
+            Pieces.active_units.remove(self)
 
     
 
@@ -121,7 +120,7 @@ class piece(Sprite):
             return False
         
         # Get the unit we're going to attack.
-        u = BaseUnit.get_unit_at_pos(to_pos)
+        u = Pieces.get_unit_at_pos(to_pos)
         
         # We can't attack if there's no unit there, if it's on our team,
         # if we can't hit this particular unit, or if the damage is 0
@@ -165,4 +164,20 @@ class piece(Sprite):
             return True
         return False
 
-checkers.unit_types["Pawns"] = piece
+        def set_path(self, tile_x, tile_y):
+        """
+        Tells the unit that it should be moving, where, and how.
+        """
+        position = tile_pos()
+        if self.type == "Pawn":
+            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team):
+                #jump function
+                pass   
+
+
+        elif self.type == "King":
+            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]-1),(position[1]-1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]-1))).team == self.team):
+                #jump function
+                pass
+
+checkers.unit_types["Pawns"] = Pieces

@@ -1,5 +1,5 @@
 import sys, pygame, tiles
-from GUI import GUI
+from Gui import GUI
 
 RESOLUTION = pygame.Rect(0, 0, 800, 600)
 BG_COLOR = (32, 32, 32)
@@ -31,7 +31,7 @@ while 1:
             sys.exit()
         # Respond to clicks
         elif event.type == pygame.MOUSEBUTTONUP:
-            main_gui.on_click(event)
+            tile_x,tile_y = main_gui.on_click(event)
     main_gui.update()
     main_gui.draw()
     clock.tick(60)

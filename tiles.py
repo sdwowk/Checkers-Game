@@ -32,6 +32,7 @@ class TileMap(Sprite):
         
         # Set up map info
         self._sprite_sheet = pygame.image.load(sheet_name)
+
         self._tile_width = tile_width
         self._tile_height = tile_height
         self._map_width = None
@@ -50,60 +51,66 @@ class TileMap(Sprite):
         """
         Returns the number of tiles on the map.
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t._tile_count()
-        25
+        64
         """
-        return self._map_width * self._map_height
+        return int(self._map_width/self._tile_width) * int(self._map_height/self._tile_height)
         
     def _tile_position(self, index):
         """
         Returns a tile's coordinates in tile units within the map given its
         index in the list.
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
-        >>> t._tile_position(12)
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
+        >>> t._tile_position(2)
+        (2, 0)
+        >>> t._tile_position(18)
         (2, 2)
+        >>> t._tile_position(20)
+        (4, 2)
         """
-        return (index % self._map_width, index // self._map_width)
-        
+        return (index % int(self._map_width/self._tile_width), index // int(self._map_width/self._tile_width))
+                
     def _tile_exists(self, coords):
         """
         Returns true if a tile exists, or false if it doesn't
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t._tile_exists((2, 2))
         True
         >>> t._tile_exists((-2, -1))
         False
-        >>> t._tile_exists((6, 7))
+        >>> t._tile_exists((9, 7))
         False
         """
         return not (
             coords[0] < 0 or
-            coords[0] >= self._map_width or
+            coords[0] >= (self._map_width/self._tile_width) or
             coords[1] < 0 or
-            coords[1] >= self._map_height)
+            coords[1] >= self._map_height/self._tile_width)
         
     def _tile_index(self, coords):
         """
         Returns a tile's index in the list given its tile coordinates in tile
         units. Returns -1 if the provided coordinates are invalid.
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t._tile_index((2, 2))
-        12
+        18
+        >>> t._tile_index((7, 7))
+        63
         """
         if not self._tile_exists(coords): return -1
 
         #make sure to cast to int because input is sometimes floats
         #There won't be rounding errors though because the numbers
         #are just integers with .0 after
-        return int(coords[1]) * self._map_width + int(coords[0])
+        return int(coords[1] * (self._map_width/self._tile_width) + int(coords[0]))
         
     def _get_highlight_color(self, colorA, colorB):
         """
@@ -126,8 +133,8 @@ class TileMap(Sprite):
         """
         # Create the empty surface
         self._base_image = pygame.Surface(
-            (self._tile_width * self._map_width,
-            self._tile_height * self._map_height)
+            (self._map_width,
+            self._map_height)
         )
         
         # draw in each tile
@@ -163,11 +170,10 @@ class TileMap(Sprite):
         """
         Returns a copy of the list of tiles.
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
-        >>> t.get_tiles() == [0, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        ...                   0, 0, 0, 0, 0, 0, 0, 0]
-        True
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
+        >>> len(t.get_tiles())
+        64
         """
         return self._tiles[:]
             
@@ -177,28 +183,28 @@ class TileMap(Sprite):
         The image file should be have an 8-bit indexed palette. Each colour
         index corresponds to the tile (e.g. colour index 2 = tile type 2)
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t.rect
-        <rect(0, 0, 100, 100)>
-        >>> t.get_tiles() == [0, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        ...                   0, 0, 0, 0, 0, 0, 0, 0]
-        True
+        <rect(0, 0, 640, 640)>
         """
         tiles = []
         
         # Load in the map image.
         map_image = pygame.image.load(filename)
         self._map_width, self._map_height = map_image.get_size()
-        self.rect.w = self._map_width * self._tile_width
-        self.rect.h = self._map_height * self._tile_height
+        self._map_width = self._map_width * 20
+        self._map_height = self._map_height * 20
+
+        self.rect.w = self._map_width
+        self.rect.h = self._map_height
         
         # Go through the image adding tiles
         map_tiles = []
-        for y in range(map_image.get_height()):
-            for x in range(map_image.get_width()):
+        for y in range(int(self.rect.w/self._tile_height)):
+            for x in range(int(self.rect.h/self._tile_width)):
                 # The tile number corresponds to the pixel colour index
-                tiles.append(map_image.get_at_mapped((x, y)))
+                tiles.append(map_image.get_at_mapped((int(x*4), int(y*4))))
         
         # Set the tiles
         self._set_tiles(tiles)
@@ -207,10 +213,10 @@ class TileMap(Sprite):
         """
         Returns a tuple containing a tile's width and height within this map.
         
-        >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
+        >>> t = TileMap("assets/tiles.png", 80, 80)
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t.get_tile_size()
-        (20, 20)
+        (80, 80)
         """
         return (self._tile_width, self._tile_height)
         
@@ -225,10 +231,8 @@ class TileMap(Sprite):
         (2, 1)
         """
         x, y = screen_coords
-        return (
-            math.floor((x - self.rect.left) / self._tile_width),
-            math.floor((y - self.rect.top) / self._tile_height)
-        )
+        return math.floor((x - self.rect.left) / self._tile_width), math.floor((y - self.rect.top) / self._tile_height)
+        
         
     def screen_coords(self, tile_coords):
         """
@@ -269,13 +273,13 @@ class TileMap(Sprite):
         coordinates which do not exist.
         
         >>> t = TileMap("assets/tiles.png", 20, 20)
-        >>> t.load_from_file("maps/test-1.gif")
+        >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t.neighbours((0, 0))
-        [(1, 0), (0, 1)]
-        >>> t.neighbours((4, 4))
-        [(4, 3), (3, 4)]
-        >>> t.neighbours((1, 1))
-        [(1, 0), (2, 1), (0, 1), (1, 2)]
+        [(1, 1)]
+        >>> t.neighbours((4, 4)) == [(5, 3), (5, 5), (3, 5), (3, 3)]
+        True
+        >>> t.neighbours((1, 1)) == [(2, 0), (2, 2), (0, 2), (0, 0)]
+        True
         """
         x, y = coords
         
@@ -335,22 +339,22 @@ class TileMap(Sprite):
             
         # draw the grid
         for x in range(0,
-                        self._map_width * self._tile_width,
+                        self._map_width,
                         self._tile_width):
             pygame.gfxdraw.vline(
                 self.image,
                 x,
                 0,
-                self._map_height * self._tile_height,
+                self._map_height,
                 GRID_COLOR
             )
         for y in range(0,
-                        self._map_height * self._tile_height,
+                        self._map_height,
                         self._tile_height):
             pygame.gfxdraw.hline(
                 self.image,
                 0,
-                self._map_width * self._tile_width,
+                self._map_width,
                 y,
                 GRID_COLOR
             )
@@ -404,105 +408,6 @@ def better_tile(a, b, start, end):
             else:
                 return False
             
-def find_path(graph,
-                start,
-                end,
-                cost = lambda pos: 1,
-                passable = lambda pos: True,
-                heuristic = helper.manhattan_dist):
-    """
-    Returns the path between two nodes as a list of nodes using the A*
-    algorithm.
-    If no path could be found, an empty list is returned.
-    
-    The cost function is how much it costs to leave the given node. This should
-    always be greater than or equal to 1, or shortest path is not guaranteed.
-    
-    The passable function returns whether the given node is passable.
-    
-    The heuristic function takes two nodes and computes the distance between the
-    two. Underestimates are guaranteed to provide an optimal path, but it may
-    take longer to compute the path. Overestimates lead to faster path
-    computations, but may not give an optimal path.
-    
-    Code based on algorithm described in:
-    http://www.policyalmanac.org/games/aStarTutorial.htm
-    
-    Example use:
-    >>> t = TileMap("assets/tiles.png", 20, 20)
-    >>> t.load_from_file("maps/test-2.gif")
-    
-    >>> find_path(t, (0, 0), (4, 4))
-    [(0, 0), (1, 0), (1, 1), (2, 1), (2, 2), (3, 2), (3, 3), (4, 3), (4, 4)]
-    >>> find_path(t, (0, 0), (5, 5))
-    []
-    
-    >>> t = TileMap("assets/tiles.png", 20, 20)
-    >>> t.load_from_file("maps/test-3.gif")
-    >>> cost = lambda c: 1
-    >>> passable = lambda c: t.tile_data(c).passable
-   
-    >>> find_path(t, (2, 0), (4, 1), cost, passable) == [(2, 0), (1, 0), (0, 0),
-    ... (0, 1), (0, 2), (1, 2), (2, 2), (3, 2), (3, 3), (3, 4), (4, 4), (5, 4),
-    ... (5, 3), (5, 2), (5, 1), (4, 1)]
-    True
-    """
-    # tiles to check (tuples of (x, y), cost)
-    todo = pqueue.PQueue()
-    todo.update(start, 0)
-    
-    # tiles we've been to
-    visited = set()
-    
-    # associated G and H costs for each tile (tuples of G, H)
-    costs = { start: (0, heuristic(start, end)) }
-    
-    # parents for each tile
-    parents = {}
-    
-    while todo and (end not in visited):
-        todo.tie_breaker = lambda a,b: better_tile(a, b, start, end)
-    
-        cur, c = todo.pop_smallest()
-        visited.add(cur)
-        
-        # check neighbours
-        for n in graph.neighbours(cur):
-            # skip it if we've already checked it, or if it isn't passable
-            if ((n in visited) or
-                (not passable(n))):
-                continue
-                
-            if not (n in todo):
-                # we haven't looked at this tile yet, so calculate its costs
-                g = costs[cur][0] + cost(cur)
-                h = heuristic(n, end)
-                costs[n] = (g, h)
-                parents[n] = cur
-                todo.update(n, g + h)
-            else:
-                # if we've found a better path, update it
-                g, h = costs[n]
-                new_g = costs[cur][0] + cost(cur)
-                if new_g < g:
-                    g = new_g
-                    todo.update(n, g + h)
-                    costs[n] = (g, h)
-                    parents[n] = cur
-    
-    # we didn't find a path
-    if end not in visited:
-        return []
-    
-    # build the path backward
-    path = []
-    while end != start:
-        path.append(end)
-        end = parents[end]
-    path.append(start)
-    path.reverse()
-    
-    return path
     
 def reachable_tiles(graph,
                       start,

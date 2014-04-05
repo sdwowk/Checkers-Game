@@ -10,7 +10,6 @@ class Pieces(Sprite):
     This just handles rules of movement, jumping and position on the map. 
     """
     active_units = pygame.sprite.LayeredUpdates()
-    sprite = pygame.image.load("assets/Pawns.png")
 
     #check if we need angle
     def __init__(self, team = -1, tile_x = None, tile_y = None, activate = False):
@@ -20,7 +19,8 @@ class Pieces(Sprite):
         self.tile_x  = tile_x
         self.tile_y = tile_y
         self.position = (tile_x,tile_y)
-        self.type = "Pawns"
+        self.type = "Pawn" 
+        self.piece = self.type + str(self.team)
         self._moving = False
         self._active = False
         self._path = []
@@ -28,7 +28,7 @@ class Pieces(Sprite):
         self.turn_state = [False]
 
         #set required pygame things.
-        self.image = pygame.image.load("assets/Pawns.png")
+        self.image = pygame.image.load("assets/"+self.piece+".png")
         self.rect = pygame.Rect(0, 0, SIZE, SIZE)
         self._update_image()
         
@@ -164,5 +164,21 @@ class Pieces(Sprite):
         if dist <= r:
             return True
         return False
+
+    def set_path(self, tile_x, tile_y):
+        """
+        Tells the unit that it should be moving, where, and how.
+        """
+        position = tile_pos()
+        if self.type == "Pawn":
+            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team):
+                #jump function
+                pass   
+
+
+        elif self.type == "King":
+            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]-1),(position[1]-1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]-1))).team == self.team):
+                #jump function
+                pass
 
 checkers.unit_types["Pawns"] = Pieces
