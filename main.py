@@ -1,4 +1,4 @@
-import sys, pygame, tiles, checkers
+import sys, pygame, tiles, checkers, AI
 from Gui import GUI
 from checkers.pieces import *
 from gameplay import *
@@ -41,17 +41,29 @@ while 1:
         # Respond to clicks
         elif event.type == pygame.MOUSEBUTTONUP:
             tile_x,tile_y = main_gui.on_click(event)
-            print(main_gui.select_state)
+            
             if main_gui.select_state == True:
-                print(tile_x,tile_y)
+                
                 unit = gameplay.get_unit_at_pos((tile_x,tile_y))
+                
                 if not unit == None:
                     if unit.team == main_gui.current_team:
-                        path = gameplay.move_path(tile_x,tile_y)
-                        main_gui.draw_path(path)
-                    elif  path:
+                        
+                        path = gameplay.set_path((tile_x,tile_y))
+                        main_gui.moveable_tiles = path
+                        print(path)
+                        main_gui.draw_path()
+                    elif not path == []:
+                        print("ho")
                         if (tile_x, tile_y) in path:
                             x = 0
+                """
+        else:
+            if main_gui.current_team == 1:
+                path = AI.make_move
+                """
+                
     main_gui.update()
     main_gui.draw()
     clock.tick(60)
+ 

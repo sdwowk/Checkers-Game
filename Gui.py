@@ -124,6 +124,7 @@ class GUI(LayeredUpdates):
 
         # The currently selected unit
         self.sel_unit = None
+        self.moveable_tiles = []
        
         # Haven't determined who goes first yet.
         self.select_state = False
@@ -266,6 +267,7 @@ class GUI(LayeredUpdates):
                 #effect the game
                 return 9, 9
         else:
+            return 9, 9
             print("Broked")
                         
 
@@ -419,7 +421,8 @@ class GUI(LayeredUpdates):
         screen_x, screen_y = self.map.screen_coords((x, y))
         return screen_x, screen_y
 
-    def draw_path(self, path):
+    def draw_path(self):
         # Highlight those squares
+        print("I wanna die")
         self.map.set_highlight(
-            "move", MOVE_COLOR_A, MOVE_COLOR_B, path)
+            "move", MOVE_COLOR_A, MOVE_COLOR_B, self.moveable_tiles)
