@@ -41,13 +41,17 @@ while 1:
         # Respond to clicks
         elif event.type == pygame.MOUSEBUTTONUP:
             tile_x,tile_y = main_gui.on_click(event)
-            unit = gameplay.get_unit_at_pos((tile_x,tile_y))
-            if not unit == None:
-                path = gameplay.move_path(tile_x,tile_y)
-                main_gui.draw_path(path)
-            elif  path:
-                if (tile_x, tile_y) in path:
-                    x = 0
+            print(main_gui.select_state)
+            if main_gui.select_state == True:
+                print(tile_x,tile_y)
+                unit = gameplay.get_unit_at_pos((tile_x,tile_y))
+                if not unit == None:
+                    if unit.team == main_gui.current_team:
+                        path = gameplay.move_path(tile_x,tile_y)
+                        main_gui.draw_path(path)
+                    elif  path:
+                        if (tile_x, tile_y) in path:
+                            x = 0
     main_gui.update()
     main_gui.draw()
     clock.tick(60)

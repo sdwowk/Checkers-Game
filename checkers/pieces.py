@@ -29,6 +29,7 @@ class Pieces(Sprite):
 
         #set required pygame things.
         self.image = pygame.image.load("assets/"+self.piece+".png")
+        self.image = pygame.transform.scale(self.image,(80,80))
         self.rect = pygame.Rect(0, 0, SIZE, SIZE)
         self._update_image()
         

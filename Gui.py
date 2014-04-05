@@ -54,6 +54,39 @@ Button = namedtuple('Button', ['slot', 'text', 'onClick', 'condition'])
 
 class GUI(LayeredUpdates):
     num_instances = 0
+
+    def Simulation_pressed(self):
+        pass
+
+    def HeadsPressed(self):
+        if not self.can_choose():
+            return
+        else:
+            heads = random.randint(0,1)
+            x = random.randint(0,1)
+            if x == heads:
+            #player1 goes first
+                self.select_state = True
+                return
+            else:
+            #Computer goes first
+                self.select_state = True
+                self.end_turn_processed()
+        
+    def TailsPressed(self):
+        if not self.can_choose():
+            return
+        else:
+            tails = random.randint(0,1)
+            x = random.randint(0,1)
+            if x == tails:
+                self.select_state = True
+                return
+
+            else:
+                self.select_state = True
+                self.end_turn_processed()
+
     def __init__(self, screen_rect, bg_color):
         """
         Initialize the display.
@@ -86,14 +119,14 @@ class GUI(LayeredUpdates):
 
         # Set up team information
         self.num_teams = None
-        self.current_turn = 0
+        self.current_team = 0
         self.win_team = None 
 
         # The currently selected unit
         self.sel_unit = None
        
         # Haven't determined who goes first yet.
-        self.choose_state = False
+        self.select_state = False
  
         # Set up GUI
         self.buttons = [
@@ -221,44 +254,19 @@ class GUI(LayeredUpdates):
 
                 return tile_x, tile_y
                 
-                if unit:
-                    # clicking the same unit again deselects it and, if
-                    # necessary, resets select mode
-                    if unit == self.sel_unit:
-                        self.change_mode(Modes.Select)
-                        self.sel_unit = None
-
-                    # select a new unit
-                    elif (self.mode == Modes.Select and
-                          unit.team == self.cur_team):
-                        self.sel_unit = unit
-                        
-                        
-                    # Attack
-                    elif (self.mode == Modes.ChooseAttack and
-                        self.sel_unit and
-                        to_tile_pos in self._attackable_tiles):
-                        # Attack the selected tile
-                        self.sel_unit_attack(to_tile_pos)
-                else:
-                    # No unit there, so a tile was clicked
-                    if (self.mode == Modes.ChooseMove and
-                        self.sel_unit and
-                        to_tile_pos in self._movable_tiles):
-                        
-                        # Move to the selected tile
-                        self.sel_unit_move(to_tile_pos)
-            
-            # Otherwise, the user is interacting with the GUI panel
             else:
                 # Check which button was pressed
                 for button in self.buttons:
                     # If the button is enabled and has a click function, call
                     # the function
-                    if ((not button.condition or button.condition()) and
-                        self.get_button_rect(button).collidepoint(e.pos)):
+                    if ((not button.condition or button.condition()) and self.get_button_rect(button).collidepoint(e.pos)):
+                        print("yes")
                         button.onClick()
-                        
+                #Click was off of the tile grid return a values that won't
+                #effect the game
+                return 9, 9
+        else:
+            print("Broked")
                         
 
     def draw(self):
@@ -357,7 +365,7 @@ class GUI(LayeredUpdates):
         but_color = BAR_COLOR
         
         # The button can't be used
-        if button.condition and not button.condition():
+        if not self.can_choose():
             but_color = BUTTON_DISABLED_COLOR
         else:
             # The button can be used
@@ -389,34 +397,8 @@ class GUI(LayeredUpdates):
     def can_choose(self):
         
 
-        return not self.choose_state
+        return not self.select_state
 
-    def HeadsPressed(self, button):
-        if self.choose_state == True:
-            return
-        heads = random.randint(0,1)
-        x = random.randint(0,1)
-        if x == heads:
-            #player1 goes first
-            self.choose_state == True
-            return
-        else:
-            #Computer goes first
-            self.choose_state == True
-            end_turn_processed()
-        
-    def TailsPressed(self, button):
-        if self.choose_state == True:
-            return
-        tails = random.randint(0,1)
-        x = random.randint(0,1)
-        if x == tails:
-            self.choose_state == True
-            return
-
-        else:
-            self.choose_state == True
-            end_turn_processed()
         
     def end_turn_processed(self):
         """
@@ -424,18 +406,9 @@ class GUI(LayeredUpdates):
         Advances to the next turn.
         """
      
-        coords = (self.sel_unit.tile_x, self.sel_unit.tile_y)
-
-        # reset game mode
-        self.change_mode(Modes.Select)
-        
-        # unselect unit
-        self.sel_unit = None
-        
-        tile = self.map.tile_data(coords)
-
         # advance turn
-        self.current_turn += 1
+        self.current_team += 1 % 2
+        return self.current_team
 
     def update_unit_rect(self, unit):
         """
@@ -445,10 +418,8 @@ class GUI(LayeredUpdates):
         x, y = unit.tile_x, unit.tile_y
         screen_x, screen_y = self.map.screen_coords((x, y))
         return screen_x, screen_y
-    def Simulation_pressed(self):
-        pass
 
     def draw_path(self, path):
         # Highlight those squares
         self.map.set_highlight(
-            "move", MOVE_COLOR_A, MOVE_COLOR_B, self._movable_tiles)
+            "move", MOVE_COLOR_A, MOVE_COLOR_B, path)
