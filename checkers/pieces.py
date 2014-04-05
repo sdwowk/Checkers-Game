@@ -100,13 +100,13 @@ class Pieces(Sprite):
             self._active = True
             Pieces.active_units.add(self)
     
-    def deactivate(self):
+    def deactivate(self, unit):
         """
         Removes this unit from the active roster.
         """
-        if self._active:
-            self._active = False
-            Pieces.active_units.remove(self)
+        if unit._active:
+            unit._active = False
+            Pieces.active_units.remove(unit)
 
     
 
