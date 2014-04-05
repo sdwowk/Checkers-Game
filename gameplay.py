@@ -129,4 +129,16 @@ class Gameplay(Sprite):
                 
         return path
 
-    
+    def move(self,position, unit, path):
+        neighbourNew, neighbourOld = self.map.neighbours(position), self.map.neighbours(unit.position)
+        for i in neighbourOld:
+            if i in neighbourNew:
+                Pieces.deactivate(i)
+                self.active_units = Pieces.active_units
+
+        if unit.position in path:
+            path.remove(unit.position)
+        unit.tile_x = position[0]
+        unit.tile_y = position[1]
+        unit.position = position
+        return path

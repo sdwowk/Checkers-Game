@@ -47,16 +47,15 @@ while 1:
                 unit = gameplay.get_unit_at_pos((tile_x,tile_y))
                 
                 if not unit == None:
-                    if unit.team == main_gui.current_team:
+                    if unit.team == main_gui.current_team and path:
                         
                         path = gameplay.set_path((tile_x,tile_y))
                         main_gui.moveable_tiles = path
                         print(path)
                         main_gui.draw_path()
                     elif not path == []:
-                        print("ho")
                         if (tile_x, tile_y) in path:
-                            x = 0
+                            path = gameplay.move((tile_x,tile_y), unit, path)
                 """
         else:
             if main_gui.current_team == 1:
