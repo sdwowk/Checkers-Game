@@ -1,7 +1,8 @@
-import sys, pygame, tiles, checkers, AI
+import sys, pygame, tiles, checkers
 from Gui import GUI
 from checkers.pieces import *
 from gameplay import *
+from Ai import AI
 
 RESOLUTION = pygame.Rect(0, 0, 800, 600)
 BG_COLOR = (32, 32, 32)
@@ -24,6 +25,7 @@ for i in new_units:
     Checkers = Pieces(i[0],i[1],i[2],i[3])
 
 gameplay = Gameplay(main_gui.map, Checkers.active_units)
+ai = AI(Checkers.active_units)
 
 path = None
 
@@ -58,11 +60,16 @@ while 1:
                 elif not path == None:
                     if (tile_x, tile_y) in path:
                         path = gameplay.move((tile_x, tile_y), unitold, path)
-                        for i in gameplay.active_units:
-                            print(i.piece)
                     if path == []:
                         #Returns None so that there is no path
                         path = main_gui.end_turn_processed()  
+                if main_gui.current_team == 1:
+                    while path == None or len(path) < 1:
+                        unit = ai.move()
+                        path = gameplay.set_path(unit.position)
+                    path = gameplay.move(path[0], unit, path)
+                    if path == []:
+                        path = main_gui.end_turn_processed()
                         
     main_gui.update()
     main_gui.draw(gameplay.active_units)
