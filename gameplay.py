@@ -93,21 +93,20 @@ class Gameplay(Sprite):
                 neighs.remove(x)
                 neighs.remove(y)
             if (not (pawn_neighs[0] or pawn_neighs[1]) == None):
-                print(neighs)
-                print(position)
-                if (pawn_neighs[0].team == unit.team) or (pawn_neighs[1].team == unit.team):
+                if pawn_neighs[1] == None:
+                    pawn_neighs.remove(pawn_neighs[1])
+
+                if  pawn_neighs[0] == None:
+                    pawn_neighs.remove(pawn_neighs[0])
+                if not pawn_neighs[0].team == unit.team:
                     return  jump(position, path)
             else:
-                print("were here")
-                print(pawn_neighs[0])
-                print(pawn_neighs[1])
                 if (pawn_neighs[0] == None):
                     path.append(neighs[0])
-                    print("why I no here")
+                    
                 if (pawn_neighs[1] == None):
                     path.append(neighs[1])
-                    print("I so much wan be here")
-                print("Why u no work?")
+                    
                 return path
 
         elif unit.type == "King":
@@ -141,4 +140,8 @@ class Gameplay(Sprite):
         unit.tile_x = position[0]
         unit.tile_y = position[1]
         unit.position = position
+        for i in neighbourOld:
+            if i in path:
+                path.remove(i)
+            
         return path

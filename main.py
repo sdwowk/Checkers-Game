@@ -25,7 +25,7 @@ for i in new_units:
 
 gameplay = Gameplay(main_gui.map, Checkers.active_units)
 
-path = []
+path = None
 
 # The main game loop
 while 1:
@@ -44,24 +44,23 @@ while 1:
             
             if main_gui.select_state == True:
                 
-                unit = gameplay.get_unit_at_pos((tile_x,tile_y))
+                unitnew = gameplay.get_unit_at_pos((tile_x,tile_y))
                 
-                if not unit == None:
-                    if unit.team == main_gui.current_team and path:
+                if not unitnew == None:
+                    if unitnew.team == main_gui.current_team:
                         
                         path = gameplay.set_path((tile_x,tile_y))
                         main_gui.moveable_tiles = path
                         print(path)
                         main_gui.draw_path()
-                    elif not path == []:
-                        if (tile_x, tile_y) in path:
-                            path = gameplay.move((tile_x,tile_y), unit, path)
-                """
-        else:
-            if main_gui.current_team == 1:
-                path = AI.make_move
-                """
-                
+                        unitold = unitnew
+                elif not path == None:
+                    if (tile_x, tile_y) in path:
+                        path = gameplay.move((tile_x,tile_y), unitold, path)
+                        
+                    if path == []:
+                        path = main_gui.end_turn_processed()  
+                                
     main_gui.update()
     main_gui.draw()
     clock.tick(60)

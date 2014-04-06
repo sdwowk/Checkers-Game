@@ -409,8 +409,9 @@ class GUI(LayeredUpdates):
         """
      
         # advance turn
-        self.current_team += 1 % 2
-        return self.current_team
+        self.current_team += 1 
+        self.current_team = self.current_team % 2
+        return None
 
     def update_unit_rect(self, unit):
         """

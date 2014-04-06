@@ -15,4 +15,5 @@ class AI:
 
     def make_move(self):
         x = 0
+        return []
         
