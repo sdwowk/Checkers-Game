@@ -153,3 +153,12 @@ class Gameplay(Sprite):
                 path.remove(i)
             
         return path
+
+    def kingME (self, unit):
+        
+        if (unit.team == 0 and unit.position[1] == 7) or (unit.team == 1 and unit.position[1] == 0):
+            unit.type = "King"
+            self.active_units = Pieces.active_units
+            
+
+        
