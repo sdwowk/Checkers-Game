@@ -33,42 +33,45 @@ class Gameplay(Sprite):
         
         def jump(new_pos, path):
             # calculate jump
-            newunit = self.get_unit_at_pos(new_pos)
             path.append(new_pos)
             neighs = self.map.neighbours(position)
+            for i in neighs:
+                pawn_neighs.append(self.get_unit_at_pos(i))
+
             open_areas = [(new_pos[0] + 2, new_pos[1] - 2),
                           (new_pos[0] + 2, new_pos[1] + 2), 
                           (new_pos[0] - 2, new_pos[1] + 2),
                           (new_pos[0] - 2, new_pos[1] - 2)]
 
-            if newunit.type == "Pawn":
-                pawn_neighs = [self.get_unit_at_pos(neighs[1]),self.get_unit_at_pos(neighs[2])]
-                
-                if not pawn_neighs[0].team == newunit.team: 
-                    if self.get_unit_at_pos(open_areas[1]) == None:
-                        path.append(jump(open_areas[1], path))
-                    
-                if not pawn_neighs[1].team == newunit.team:
-                    if self.get_unit_at_pos(open_areas[2]) == None:
-                        path.append(jump(open_areas[2], path))
+            if unit.type == "Pawn":
+
+                if not pawn_neighs[0] == None:
+                    if not pawn_neighs[0].team == unit.team: 
+                        if self.get_unit_at_pos(open_areas[1]) == None:
+                            path.append(jump(open_areas[1], path))
+                            
+                if not pawn_neighs[1] == None:
+                    if not pawn_neighs[1].team == unit.team:
+                        if self.get_unit_at_pos(open_areas[2]) == None:
+                            path.append(jump(open_areas[2], path))
 
                 return path
                     
-            if newunit.type == "King":
+            if unit.type == "King":
                 king_neighs = [self.get_unit_at_pos(neighs[0]), self.get_unit_at_pos(neighs[1]), self.get_unit_at_pos(neighs[2]), self.get_unit_at_pos(neighs[3])]
-                if not king_neighs[0].team == newunit.team:
+                if not king_neighs[0].team == unit.team:
                     if self.get_unit_at_pos(open_areas[0]) == None:
                         path.append(jump(open_areas[0], path))
                         
-                if not king_neighs[1].team == newunit.team and not None:
+                if not king_neighs[1].team == unit.team:
                     if self.get_unit_at_pos(open_areas[1]) == None:
                         path.append(jump(open_areas[1], path))
                         
-                if not king_neighs[2].team == newunit.team:
+                if not king_neighs[2].team == unit.team:
                     if self.get_unit_at_pos(open_areas[2]) == None:
                         path.append(jump(open_areas[2], path))
                         
-                if not king_neighs[3].team == newunit.team:
+                if not king_neighs[3].team == unit.team:
                     if self.get_unit_at_pos(open_areas[3]) == None:
                         path.append(jump(open_areas[3], path))
                         
@@ -77,37 +80,30 @@ class Gameplay(Sprite):
 
 
         path = []
+        pawn_neighs = []
         unit = self.get_unit_at_pos(position)
         neighs = self.map.neighbours(position)
+        for i in neighs:
+            pawn_neighs.append(self.get_unit_at_pos(i))
+
         if unit.type == "Pawn":
+            """
             if unit.team == 0:
-                pawn_neighs = [self.get_unit_at_pos(neighs[1]),self.get_unit_at_pos(neighs[2])]
-                x = neighs[3]
-                y = neighs[0]
-                neighs.remove(x)
-                neighs.remove(y)
+
             else:
                 pawn_neighs = [self.get_unit_at_pos(neighs[0]),self.get_unit_at_pos(neighs[3])]
-                x = neighs[1]
-                y = neighs[2]
-                neighs.remove(x)
-                neighs.remove(y)
-            if (not (pawn_neighs[0] or pawn_neighs[1]) == None):
-                if pawn_neighs[1] == None:
-                    pawn_neighs.remove(pawn_neighs[1])
+            """
+            for i in pawn_neighs:   
+                if not i == None:
+                    if not i.team == unit.team:
+                        return jump(position, path)
 
-                if  pawn_neighs[0] == None:
-                    pawn_neighs.remove(pawn_neighs[0])
-                if not pawn_neighs[0].team == unit.team:
-                    return  jump(position, path)
-            else:
-                if (pawn_neighs[0] == None):
-                    path.append(neighs[0])
+            if path == []:
+                for i in neighs:
+                    if (self.get_unit_at_pos(i) == None):
+                        path.append(i)
                     
-                if (pawn_neighs[1] == None):
-                    path.append(neighs[1])
-                    
-                return path
+            return path
 
         elif unit.type == "King":
             king_neighs = [get_unit_at_pos(neighs[0]), get_unit_at_pos(neighs[1]), get_unit_at_pos(neighs[2]), get_unit_at_pos(neighs[3])]
