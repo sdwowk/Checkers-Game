@@ -36,31 +36,45 @@ class Gameplay(Sprite):
             jump_path.append(new_pos)
             neighs = self.map.neighbours(new_pos)
             pawn_neighs = []
+            open_areas = []
             for i in neighs:
                 pawn_neighs.append(self.get_unit_at_pos(i))
+                offset_x = (i[0] - new_pos[0]) * 2
+                offset_y = (i[1] - new_pos[1]) * 2
+                open_areas.append((new_pos[0] + offset_x, new_pos[1] + offset_y))
 
-            possible_areas = [(new_pos[0] + 2, new_pos[1] + 2),
-                              (new_pos[0] - 2, new_pos[1] + 2), 
-                              (new_pos[0] + 2, new_pos[1] - 2),
-                              (new_pos[0] - 2, new_pos[1] - 2)]
-            open_areas = []
-            for i in possible_areas:
-                if self.map._tile_exists(i):
-                    open_areas.append(i)
-
+                 
+            if unit.team == 1:
+                open_areas.reverse()
+                pawn_neighs.reverse()
+                
+               
             if unit.type == "Pawn":
                 
-                for i in range(len(open_areas)):
+                for i in range(len(pawn_neighs)):
+                    print('a')
                     if not pawn_neighs[i] == None:
+                        print('b')
                         if not pawn_neighs[i].team == unit.team: 
+                            print('c')
                             if self.get_unit_at_pos(open_areas[i]) == None:
+                                print('d')
                                 if unit.team == 1:
+                                    print('e')
                                     if open_areas[i][1] < new_pos[1]:
-                                        
-                                        jump(open_areas[i])
+                                        print('f')
+                                        print(open_areas[i])
+                                        if self.map._tile_exists(open_areas[i]):
+                                            print('g')
+                                            jump(open_areas[i])
                                 else:
+                                    print("e2")
                                     if open_areas[i][1] > new_pos[1]:
-                                        jump(open_areas[i])
+                                        print("f2")
+                                        print(open_areas[i])
+                                        if self.map._tile_exists(open_areas[i]):
+                                            print("g2")
+                                            jump(open_areas[i])
                 return jump_path    
             elif unit.type == "King":
                 #Same as pawns without the team check since kings can
@@ -89,21 +103,15 @@ class Gameplay(Sprite):
                 if not i == None:
                     if not i.team == unit.team:
                         path = jump(position)
+                        
+            
+            if len(path) >= 1:
+                print("Gay Unicorns are Unique")
+                while not path == [] and path[0] == position:
+                #Dont want starting postion in the path
+                    path.remove(path[0])
 
-            if len(path) == 1:
-                if path[0] == position:
-                #If no jumps available check neighbours for an empty space
-                    for i in neighs:
-                        if (self.get_unit_at_pos(i) == None):
-                            #Can't go backwards. If moving upwards you are 
-                            #actually going in negative direction.
-                            if unit.team == 1:
-                                if i[1] < position[1]:
-                                    path.append(i)
-                            else:
-                                if i[1] > position[1]:
-                                    path.append(i)
-            elif path == []:
+            if path == []:
             #No neighbouring enemy pieces check neighbours for an empty space
                 for i in neighs:
                     if (self.get_unit_at_pos(i) == None):
@@ -146,7 +154,6 @@ class Gameplay(Sprite):
         for i in neighbourOld:
             if i in neighbourNew:
                 Pieces.deactivate(self.get_unit_at_pos(i))
-                self.active_units = Pieces.active_units
 
         unit.tile_x = position[0]
         unit.tile_y = position[1]
@@ -157,7 +164,7 @@ class Gameplay(Sprite):
             if i in path:
                 path.remove(i)
         self.kingME(unit)
-            
+        self.active_units = Pieces.active_units
         return path
 
     def kingME (self, unit):
@@ -167,5 +174,4 @@ class Gameplay(Sprite):
             unit.piece = unit.type + str(unit.team)
             unit.image = pygame.image.load("assets/"+unit.piece+".png")
             unit.image = pygame.transform.scale(unit.image, (80,80))
-            self.active_units = Pieces.active_units
         
