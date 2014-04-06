@@ -49,7 +49,6 @@ class Gameplay(Sprite):
                     open_areas.append(i)
 
             if unit.type == "Pawn":
-                offset = int(unit.team * 2)
                 #Only need two checks for Pawns
                 for i in range(len(open_areas)):
                     if not pawn_neighs[i] == None:
@@ -59,9 +58,9 @@ class Gameplay(Sprite):
                                     if open_areas[i][1] < new_pos[1]:
                                         
                                         jump(open_areas[i])
-                                    else:
-                                        if open_areas[i][1] > new_pos[i]:
-                                            jump(open_areas[i])
+                                else:
+                                    if open_areas[i][1] > new_pos[1]:
+                                        jump(open_areas[i])
                 return path    
             if unit.type == "King":
                 king_neighs = [self.get_unit_at_pos(neighs[0]), self.get_unit_at_pos(neighs[1]), self.get_unit_at_pos(neighs[2]), self.get_unit_at_pos(neighs[3])]
