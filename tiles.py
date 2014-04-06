@@ -301,19 +301,7 @@ class TileMap(Sprite):
         It will be stored under the given name.
         """
         self._highlights[name] = (tiles, colorA, colorB)
-                
-        # draw the highlights
-        for name, (tiles, colorA, colorB) in self._highlights.items():
-            for coord in tiles:
-                tile_rect = pygame.Rect(
-                    coord[0] * self._tile_width,
-                    coord[1] * self._tile_height,
-                    self._tile_width,
-                    self._tile_height
-                )
-                pygame.gfxdraw.box(self.image,
-                                   tile_rect,
-                                   self._get_highlight_color(colorA, colorB))
+
         
     def remove_highlight(self, name):
         """
@@ -338,6 +326,20 @@ class TileMap(Sprite):
         self.image = self._base_image.copy()
 
             
+                
+        # draw the highlights
+        for name, (tiles, colorA, colorB) in self._highlights.items():
+            for coord in tiles:
+                tile_rect = pygame.Rect(
+                    coord[0] * self._tile_width,
+                    coord[1] * self._tile_height,
+                    self._tile_width,
+                    self._tile_height
+                )
+                pygame.gfxdraw.box(self.image,
+                                   tile_rect,
+                                   self._get_highlight_color(colorA, colorB))
+
         # draw the grid
         for x in range(0,
                         self._map_width,

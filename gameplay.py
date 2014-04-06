@@ -31,7 +31,7 @@ class Gameplay(Sprite):
         Tells the unit that it should be moving, where, and how.
         """
         
-        def jump(new_pos, path):
+        def jump(new_pos):
             # calculate jump
             path.append(new_pos)
             neighs = self.map.neighbours(new_pos)
@@ -49,9 +49,9 @@ class Gameplay(Sprite):
                     if not pawn_neighs[i] == None:
                         if not pawn_neighs[i].team == unit.team: 
                             if self.get_unit_at_pos(open_areas[i]) == None:
-                                path.append(jump(open_areas[i], path))
-                return path
-                    
+                                path.append(open_areas[i])
+                                jump(open_areas[i])
+                return path    
             if unit.type == "King":
                 king_neighs = [self.get_unit_at_pos(neighs[0]), self.get_unit_at_pos(neighs[1]), self.get_unit_at_pos(neighs[2]), self.get_unit_at_pos(neighs[3])]
                 if not king_neighs[0].team == unit.team:
@@ -82,16 +82,11 @@ class Gameplay(Sprite):
             pawn_neighs.append(self.get_unit_at_pos(i))
 
         if unit.type == "Pawn":
-            """
-            if unit.team == 0:
 
-            else:
-                pawn_neighs = [self.get_unit_at_pos(neighs[0]),self.get_unit_at_pos(neighs[3])]
-            """
             for i in pawn_neighs:   
                 if not i == None:
                     if not i.team == unit.team:
-                        return jump(position, path)
+                        return jump(position)
 
             if path == []:
                 for i in neighs:
