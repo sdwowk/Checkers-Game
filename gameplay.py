@@ -103,7 +103,7 @@ class Gameplay(Sprite):
                         path = jump(position)
 
             if len(path) == 1:
-                if test[0] == position:
+                if path[0] == position:
                 #If no jumps available check neighbours for an empty space
                     for i in neighs:
                         if (self.get_unit_at_pos(i) == None):
