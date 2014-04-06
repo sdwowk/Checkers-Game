@@ -89,9 +89,9 @@ class TileMap(Sprite):
         """
         return not (
             coords[0] < 0 or
-            coords[0] >= (self._map_width/self._tile_width) or
+            coords[0] >= ((self._map_width/self._tile_width)-1) or
             coords[1] < 0 or
-            coords[1] >= self._map_height/self._tile_width)
+            coords[1] >= ((self._map_height/self._tile_width)-1))
         
     def _tile_index(self, coords):
         """
