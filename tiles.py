@@ -276,18 +276,18 @@ class TileMap(Sprite):
         >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t.neighbours((0, 0))
         [(1, 1)]
-        >>> t.neighbours((4, 4)) == [(5, 3), (5, 5), (3, 5), (3, 3)]
+        >>> t.neighbours((4, 4)) == [(5, 5), (3, 5), (5, 3), (3, 3)]
         True
-        >>> t.neighbours((1, 1)) == [(2, 0), (2, 2), (0, 2), (0, 0)]
+        >>> t.neighbours((1, 1)) == [(2, 2), (0, 2), (2, 0), (0, 0)]
         True
         """
         x, y = coords
         
         # The possible neighbouring tiles.
         neighbours = [
-            (x + 1, y - 1),
-            (x + 1, y+1),
+            (x + 1, y + 1),
             (x - 1, y+1),
+            (x + 1, y-1),
             (x - 1, y - 1)
         ]
         
