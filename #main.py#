@@ -59,7 +59,6 @@ while 1:
                     if (tile_x, tile_y) in path:
                         path = gameplay.move((tile_x, tile_y), unitold, path)
                         for i in gameplay.active_units:
-                            print(i.piece)
                     if path == []:
                         #Returns None so that there is no path
                         path = main_gui.end_turn_processed()  

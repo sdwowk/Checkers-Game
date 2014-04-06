@@ -271,7 +271,7 @@ class GUI(LayeredUpdates):
             print("Broked")
                         
 
-    def draw(self):
+    def draw(self, active_units):
         """
         Render the display.
         """
@@ -282,9 +282,9 @@ class GUI(LayeredUpdates):
         LayeredUpdates.draw(self, self.screen)
         
         # draw units
-        for u in Pieces.active_units:
+        for u in active_units:
             u.rect.x,u.rect.y = self.update_unit_rect(u)
-        Pieces.active_units.draw(self.screen)
+        active_units.draw(self.screen)
         
         # If there's a selected unit, outline it
         if self.sel_unit:
