@@ -61,7 +61,6 @@ class Gameplay(Sprite):
                                         jump(open_areas[i])
                                     else:
                                         if open_areas[i][1] > new_pos[i]:
-                                            path.append(open_areas[i])
                                             jump(open_areas[i])
                 return path    
             if unit.type == "King":
