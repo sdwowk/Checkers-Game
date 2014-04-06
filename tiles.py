@@ -89,9 +89,9 @@ class TileMap(Sprite):
         """
         return not (
             coords[0] < 0 or
-            coords[0] >= ((self._map_width/self._tile_width)-1) or
+            coords[0] > ((self._map_width/self._tile_width)-1) or
             coords[1] < 0 or
-            coords[1] >= ((self._map_height/self._tile_width)-1))
+            coords[1] > ((self._map_height/self._tile_width)-1))
         
     def _tile_index(self, coords):
         """
@@ -324,15 +324,7 @@ class TileMap(Sprite):
         # copy over the base image
         self.image = self._base_image.copy()
         
-        # draw the highlights
-        for name, (tiles, colorA, colorB) in self._highlights.items():
-            for coord in tiles:
-                tile_rect = pygame.Rect(
-                    coord[0] * self._tile_width,
-                    coord[1] * self._tile_height,
-                    self._tile_width,
-                    self._tile_height
-                )
+
                 pygame.gfxdraw.box(self.image,
                                    tile_rect,
                                    self._get_highlight_color(colorA, colorB))
