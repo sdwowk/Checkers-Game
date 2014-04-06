@@ -34,7 +34,7 @@ class Gameplay(Sprite):
         def jump(new_pos, path):
             # calculate jump
             path.append(new_pos)
-            neighs = self.map.neighbours(position)
+            neighs = self.map.neighbours(new_pos)
             for i in neighs:
                 pawn_neighs.append(self.get_unit_at_pos(i))
 
@@ -45,16 +45,11 @@ class Gameplay(Sprite):
 
             if unit.type == "Pawn":
 
-                if not pawn_neighs[0] == None:
-                    if not pawn_neighs[0].team == unit.team: 
-                        if self.get_unit_at_pos(open_areas[1]) == None:
-                            path.append(jump(open_areas[1], path))
-                            
-                if not pawn_neighs[1] == None:
-                    if not pawn_neighs[1].team == unit.team:
-                        if self.get_unit_at_pos(open_areas[2]) == None:
-                            path.append(jump(open_areas[2], path))
-
+                for i in range(len(open_areas)):
+                    if not pawn_neighs[i] == None:
+                        if not pawn_neighs[i].team == unit.team: 
+                            if self.get_unit_at_pos(open_areas[i]) == None:
+                                path.append(jump(open_areas[i], path))
                 return path
                     
             if unit.type == "King":
@@ -128,7 +123,7 @@ class Gameplay(Sprite):
         neighbourNew, neighbourOld = self.map.neighbours(position), self.map.neighbours(unit.position)
         for i in neighbourOld:
             if i in neighbourNew:
-                Pieces.deactivate(i)
+                Pieces.deactivate(self.get_unit_at_pos(i))
                 self.active_units = Pieces.active_units
 
         if unit.position in path:
