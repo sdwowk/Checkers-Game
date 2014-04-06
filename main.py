@@ -44,23 +44,25 @@ while 1:
             
             if main_gui.select_state == True:
                 
-                unitnew = gameplay.get_unit_at_pos((tile_x,tile_y))
+                unitnew = gameplay.get_unit_at_pos((tile_x, tile_y))
                 
                 if not unitnew == None:
                     if unitnew.team == main_gui.current_team:
-                        
-                        path = gameplay.set_path((tile_x,tile_y))
+                        print(main_gui.current_team)
+                        path = gameplay.set_path((tile_x, tile_y))
                         main_gui.moveable_tiles = path
                         print(path)
                         main_gui.draw_path()
                         unitold = unitnew
+       
                 elif not path == None:
                     if (tile_x, tile_y) in path:
-                        path = gameplay.move((tile_x,tile_y), unitold, path)
-                        
+                        path = gameplay.move((tile_x, tile_y), unitold, path)
+                    
                     if path == []:
+                        #Returns None so that there is no path
                         path = main_gui.end_turn_processed()  
-                                
+                        
     main_gui.update()
     main_gui.draw()
     clock.tick(60)

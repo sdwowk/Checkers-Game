@@ -35,23 +35,34 @@ class Gameplay(Sprite):
             # calculate jump
             path.append(new_pos)
             neighs = self.map.neighbours(new_pos)
+            pawn_neighs = []
             for i in neighs:
                 pawn_neighs.append(self.get_unit_at_pos(i))
 
-            open_areas = [(new_pos[0] + 2, new_pos[1] + 2),
-                          (new_pos[0] - 2, new_pos[1] + 2), 
-                          (new_pos[0] + 2, new_pos[1] - 2),
-                          (new_pos[0] - 2, new_pos[1] - 2)]
+            possible_areas = [(new_pos[0] + 2, new_pos[1] + 2),
+                              (new_pos[0] - 2, new_pos[1] + 2), 
+                              (new_pos[0] + 2, new_pos[1] - 2),
+                              (new_pos[0] - 2, new_pos[1] - 2)]
+            open_areas = []
+            for i in possible_areas:
+                if self.map._tile_exists(i):
+                    open_areas.append(i)
 
             if unit.type == "Pawn":
                 offset = int(unit.team * 2)
                 #Only need two checks for Pawns
-                for i in range(2):
-                    if not pawn_neighs[i+offset] == None:
-                        if not pawn_neighs[i+offset].team == unit.team: 
-                            if self.get_unit_at_pos(open_areas[i+offset]) == None:
-                                path.append(open_areas[offset+1])
-                                jump(open_areas[offset+1])
+                for i in range(len(open_areas)):
+                    if not pawn_neighs[i] == None:
+                        if not pawn_neighs[i].team == unit.team: 
+                            if self.get_unit_at_pos(open_areas[i]) == None:
+                                if unit.team == 1:
+                                    if open_areas[i][1] < new_pos[1]:
+                                        
+                                        jump(open_areas[i])
+                                    else:
+                                        if open_areas[i][1] > new_pos[i]:
+                                            path.append(open_areas[i])
+                                            jump(open_areas[i])
                 return path    
             if unit.type == "King":
                 king_neighs = [self.get_unit_at_pos(neighs[0]), self.get_unit_at_pos(neighs[1]), self.get_unit_at_pos(neighs[2]), self.get_unit_at_pos(neighs[3])]
@@ -76,10 +87,11 @@ class Gameplay(Sprite):
 
 
         path = []
+        test = []
         pawn_neighs = []
         unit = self.get_unit_at_pos(position)
         neighs = self.map.neighbours(position)
-        #
+        #check to see if there is a jump
         for i in neighs:
             pawn_neighs.append(self.get_unit_at_pos(i))
 
@@ -91,12 +103,18 @@ class Gameplay(Sprite):
                         return jump(position)
 
             if path == []:
-                #If no jumps available check all neighbours for an empty space 
+
+                #If no jumps available check neighbours for an empty space
                 for i in neighs:
                     if (self.get_unit_at_pos(i) == None):
-                        #Can't go backwards
-                        if i > position:
-                            path.append(i)
+                        #Can't go backwards. If moving upwards you are actually 
+                        #going in negative direction.
+                        if unit.team == 1:
+                            if i[1] < position[1]:
+                                path.append(i)
+                        else:
+                            if i[1] > position[1]:
+                                path.append(i)
                     
             return path
 
@@ -131,6 +149,7 @@ class Gameplay(Sprite):
         unit.tile_x = position[0]
         unit.tile_y = position[1]
         unit.position = position
+        path.remove(position)
         for i in neighbourOld:
             if i in path:
                 path.remove(i)
