@@ -1,4 +1,4 @@
-import pygame, tiles
+import pygame, tiles, time
 import sys
 import random
 
@@ -33,6 +33,7 @@ class Gameplay(Sprite):
         
         def jump(new_pos):
             # calculate jump
+
             jump_path.append(new_pos)
             neighs = self.map.neighbours(new_pos)
             pawn_neighs = []
@@ -41,50 +42,39 @@ class Gameplay(Sprite):
                 pawn_neighs.append(self.get_unit_at_pos(i))
                 offset_x = (i[0] - new_pos[0]) * 2
                 offset_y = (i[1] - new_pos[1]) * 2
-                open_areas.append((new_pos[0] + offset_x, new_pos[1] + offset_y))
-
-                 
+                open_areas.append((new_pos[0] + offset_x, new_pos[1] + offset_y))               
             if unit.team == 1:
                 open_areas.reverse()
                 pawn_neighs.reverse()
-                
-               
+                               
             if unit.type == "Pawn":
                 
                 for i in range(len(pawn_neighs)):
-                    print('a')
                     if not pawn_neighs[i] == None:
-                        print('b')
                         if not pawn_neighs[i].team == unit.team: 
-                            print('c')
                             if self.get_unit_at_pos(open_areas[i]) == None:
-                                print('d')
                                 if unit.team == 1:
-                                    print('e')
                                     if open_areas[i][1] < new_pos[1]:
-                                        print('f')
-                                        print(open_areas[i])
                                         if self.map._tile_exists(open_areas[i]):
-                                            print('g')
                                             jump(open_areas[i])
                                 else:
-                                    print("e2")
                                     if open_areas[i][1] > new_pos[1]:
-                                        print("f2")
-                                        print(open_areas[i])
                                         if self.map._tile_exists(open_areas[i]):
-                                            print("g2")
                                             jump(open_areas[i])
                 return jump_path    
+
             elif unit.type == "King":
                 #Same as pawns without the team check since kings can
                 #jump both forwards and backwards
                 
-                for i in range(len(open_areas)):
+
+                for i in range(len(pawn_neighs)):
                     if not pawn_neighs[i] == None:
                         if not pawn_neighs[i].team == unit.team: 
                             if self.get_unit_at_pos(open_areas[i]) == None:
-                                jump(open_areas[i])
+                                # can't travel back to spot already travelled
+                                if open_areas[i] not in jump_path:
+                                    jump(open_areas[i])
                 return jump_path    
 
 
@@ -106,7 +96,6 @@ class Gameplay(Sprite):
                         
             
             if len(path) >= 1:
-                print("Gay Unicorns are Unique")
                 while not path == [] and path[0] == position:
                 #Dont want starting postion in the path
                     path.remove(path[0])
