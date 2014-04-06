@@ -33,7 +33,7 @@ class Gameplay(Sprite):
         
         def jump(new_pos):
             # calculate jump
-            path.append(new_pos)
+            jump_path.append(new_pos)
             neighs = self.map.neighbours(new_pos)
             pawn_neighs = []
             for i in neighs:
@@ -61,8 +61,10 @@ class Gameplay(Sprite):
                                 else:
                                     if open_areas[i][1] > new_pos[1]:
                                         jump(open_areas[i])
-                return path    
+                return jump_path    
             if unit.type == "King":
+                #Same as pawns without the team check since kings can
+                #jump both forwards and backwards
                 king_neighs = [self.get_unit_at_pos(neighs[0]), self.get_unit_at_pos(neighs[1]), self.get_unit_at_pos(neighs[2]), self.get_unit_at_pos(neighs[3])]
                 if not king_neighs[0].team == unit.team:
                     if self.get_unit_at_pos(open_areas[0]) == None:
@@ -84,8 +86,8 @@ class Gameplay(Sprite):
 
 
 
+        jump_path = []
         path = []
-        test = []
         pawn_neighs = []
         unit = self.get_unit_at_pos(position)
         neighs = self.map.neighbours(position)
@@ -98,22 +100,33 @@ class Gameplay(Sprite):
             for i in pawn_neighs:   
                 if not i == None:
                     if not i.team == unit.team:
-                        return jump(position)
+                        path = jump(position)
 
-            if path == []:
-
+            if len(path) == 1:
+                if test[0] == position:
                 #If no jumps available check neighbours for an empty space
+                    for i in neighs:
+                        if (self.get_unit_at_pos(i) == None):
+                            #Can't go backwards. If moving upwards you are 
+                            #actually going in negative direction.
+                            if unit.team == 1:
+                                if i[1] < position[1]:
+                                    path.append(i)
+                            else:
+                                if i[1] > position[1]:
+                                    path.append(i)
+            elif path == []:
+            #No neighbouring enemy pieces check neighbours for an empty space
                 for i in neighs:
                     if (self.get_unit_at_pos(i) == None):
-                        #Can't go backwards. If moving upwards you are actually 
-                        #going in negative direction.
-                        if unit.team == 1:
-                            if i[1] < position[1]:
-                                path.append(i)
-                        else:
-                            if i[1] > position[1]:
-                                path.append(i)
-                    
+                        #Can't go backwards. If moving upwards you are 
+                        #actually going in negative direction.
+                            if unit.team == 1:
+                                if i[1] < position[1]:
+                                    path.append(i)
+                            else:
+                                if i[1] > position[1]:
+                                    path.append(i)
             return path
 
         elif unit.type == "King":
