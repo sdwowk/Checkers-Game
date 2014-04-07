@@ -59,9 +59,9 @@ class SmartAI:
                         tile = (unit.position[0]-1, unit.position[1]+1)
                     else:
                         tile = (unit.position[0]+1, unit.position[1]+1)
-                        if not i.team == self.team:
-                            if self.game.get_unit_at_pos(tile) == None:
-                                return True
+                    if not i.team == self.team:
+                        if self.game.get_unit_at_pos(tile) == None:
+                            return True
         return False
                         
 
