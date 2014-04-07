@@ -30,55 +30,7 @@ class Gameplay(Sprite):
         """
         Tells the unit that it should be moving, where, and how.
         """
-        
-        def jump(new_pos):
-            # calculate jump
-
-            jump_path.append(new_pos)
-            neighs = self.map.neighbours(new_pos)
-            pawn_neighs = []
-            open_areas = []
-            for i in neighs:
-                pawn_neighs.append(self.get_unit_at_pos(i))
-                offset_x = (i[0] - new_pos[0]) * 2
-                offset_y = (i[1] - new_pos[1]) * 2
-                open_areas.append((new_pos[0] + offset_x, new_pos[1] + offset_y))               
-            if unit.team == 1:
-                open_areas.reverse()
-                pawn_neighs.reverse()
-                               
-            if unit.type == "Pawn":
-                
-                for i in range(len(pawn_neighs)):
-                    if not pawn_neighs[i] == None:
-                        if not pawn_neighs[i].team == unit.team: 
-                            if self.get_unit_at_pos(open_areas[i]) == None:
-                                if unit.team == 1:
-                                    if open_areas[i][1] < new_pos[1]:
-                                        if self.map._tile_exists(open_areas[i]):
-                                            jump(open_areas[i])
-                                else:
-                                    if open_areas[i][1] > new_pos[1]:
-                                        if self.map._tile_exists(open_areas[i]):
-                                            jump(open_areas[i])
-                return jump_path    
-
-            elif unit.type == "King":
-                #Same as pawns without the team check since kings can
-                #jump both forwards and backwards
-                
-
-                for i in range(len(pawn_neighs)):
-                    if not pawn_neighs[i] == None:
-                        if not pawn_neighs[i].team == unit.team: 
-                            if self.get_unit_at_pos(open_areas[i]) == None:
-                                # can't travel back to spot already travelled
-                                if open_areas[i] not in jump_path:
-                                    jump(open_areas[i])
-                return jump_path    
-
-
-        jump_path = []
+       
         path = []
         pawn_neighs = []
         unit = self.get_unit_at_pos(position)
@@ -98,13 +50,13 @@ class Gameplay(Sprite):
                 for i in pawn_neighs:   
                     if not i == None:
                         if not i.team == unit.team:
-                            path = jump(position)
+                            path += self.jump(position, unit, path)
                         
             
                 if len(path) >= 1:
                     while not path == [] and path[0] == position:
                         
-                            #Dont want starting postion in the path
+                        #Dont want starting postion in the path
                         path.remove(path[0])
                         
                 if path == []:
@@ -129,7 +81,7 @@ class Gameplay(Sprite):
                 for i in pawn_neighs:   
                     if not i == None:
                         if not i.team == unit.team:
-                            path = jump(position)
+                            path += self.jump(position, unit, path)
                             
                 if len(path) == 1:
                     if path[0] == position:
@@ -171,55 +123,83 @@ class Gameplay(Sprite):
 
     def kingME (self, unit):
         
-        if (unit.team == 0 and unit.position[1] == 7) or (unit.team == 1 and unit.position[1] == 0):
+        if ((unit.team == 0 and unit.position[1] == 7) or 
+            (unit.team == 1 and unit.position[1] == 0)):
             unit.type = "King"
             unit.piece = unit.type + str(unit.team)
             unit.image = pygame.image.load("assets/"+unit.piece+".png")
             unit.image = pygame.transform.scale(unit.image, (80,80))
         
+ 
+    def jump(self, new_pos, unit, jump_path):
+        # calculate jump
+        
+        jump_path.append(new_pos)
+        neighs = self.map.neighbours(new_pos)
+        pawn_neighs = []
+        open_areas = []
+        for i in neighs:
+            pawn_neighs.append(self.get_unit_at_pos(i))
+            offset_x = (i[0] - new_pos[0]) * 2
+            offset_y = (i[1] - new_pos[1]) * 2
+            open_areas.append((new_pos[0] + offset_x, new_pos[1] + offset_y))               
+        if unit.team == 1:
+            open_areas.reverse()
+            pawn_neighs.reverse()
+            
+        if unit.type == "Pawn":
+            
+            for i in range(len(pawn_neighs)):
+                if not pawn_neighs[i] == None:
+                    if not pawn_neighs[i].team == unit.team: 
+                        if self.get_unit_at_pos(open_areas[i]) == None:
+                            if unit.team == 1:
+                                if open_areas[i][1] < new_pos[1]:
+                                    if self.map._tile_exists(open_areas[i]):
+                                        self.jump(open_areas[i], unit, jump_path)
+                            else:
+                                if open_areas[i][1] > new_pos[1]:
+                                    if self.map._tile_exists(open_areas[i]):
+                                        self.jump(open_areas[i], unit, jump_path)
+            return jump_path    
+
+        elif unit.type == "King":
+            #Same as pawns without the team check since kings can
+            #jump both forwards and backwards
+                
+            
+            for i in range(len(pawn_neighs)):
+                if not pawn_neighs[i] == None:
+                    if not pawn_neighs[i].team == unit.team: 
+                        if self.get_unit_at_pos(open_areas[i]) == None:
+                            # can't travel back to spot already travelled
+                            if open_areas[i] not in jump_path:
+                                self.jump(open_areas[i], unit, jump_path)
+            return jump_path    
+
+
 
     def can_move(self, unit):
-	"""
-	Check to see if there is a jump available to one of the units.
-	If so and the incorrect unit is select it returns False. If no 
-	jump is available, or a jump exists for the unit, it returns True. 
-	"""
-
+        """
+        Check to see if there is a jump available to one of the units.
+        If so and the incorrect unit is select it returns False. If no 
+        jump is available, or a jump exists for the unit, it returns True. 
+        """
+        
         jumpable_units = []
         
-	for i in self.active_units:
-
+        for i in self.active_units:
+            path = []
             #Only check the units on current team
-            pawn_neighs = []
             if i.team == unit.team:
-                neighs = self.map.neighbours(i.position)
-                
-                #check to see if there is a jump
-                for u in neighs:
-                    pawn_neighs.append(self.get_unit_at_pos(u))
-                    
-                    if unit.type == "Pawn":
-                        
-                        #Check neighbours to see if there is a possible jump
-                        for j in pawn_neighs:
-                            if not j == None:
-                                if not j.team == unit.team:
-                                    if unit.team == 1:
-                                        if j.tile_y < unit.tile_y:
-                                            moveable_units.append(i)
-                                    else:
-                                        if j.tile_y > unit.tile_y:
-                                            moveable_units.append(i)
-                                            
-                    elif unit.type == "King":
-			#Check neighbours to see if there is a possible jump
-                        for j in pawn_neighs:   
-                            if not j == None:
-                                if not j.team == unit.team:
-                                    moveable_units.append(i)
+                path += self.jump(i.position, i, path)
+                while i.position in path:
+                    path.remove(i.position)
+                if not path == []:
+                    jumpable_units.append(i)
+
                                     
-                                    
-        if unit in moveable_units or moveable_units == []:
+        if (unit in jumpable_units) or (jumpable_units == []):
             return True
-	else:
+        else:
             return False
