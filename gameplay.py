@@ -28,12 +28,14 @@ class Gameplay(Sprite):
 
     def set_path(self, position):
         """
-        Tells the unit that it should be moving, where, and how.
+        Finds the path for a unit.
         """
        
         path = []
         pawn_neighs = []
         unit = self.get_unit_at_pos(position)
+        # Checks to see if there is a jump for another unit or if your unit
+        # has a jump if not returns None.
         if not self.can_move(unit):
             return []
         else:
@@ -60,7 +62,7 @@ class Gameplay(Sprite):
                         path.remove(path[0])
                         
                 if path == []:
-                    #No neighbouring enemy pieces check neighbours for 
+                    #No neighbouring enemy pieces, check neighbours for 
                     # an empty space
                     for i in neighs:
                         if (self.get_unit_at_pos(i) == None):
@@ -83,21 +85,17 @@ class Gameplay(Sprite):
                         if not i.team == unit.team:
                             path += self.jump(position, unit, path)
                             
-                if len(path) == 1:
-                    if path[0] == position:
-                        #If no jumps available check neighbours for an 
-                        # empty space
-                        for i in neighs:
-                            if (self.get_unit_at_pos(i) == None):
-                                path.append(i)
+                while position in path:
+                    path.remove(position)
                     
-                elif path == []:
+                if path == []:
 
                     #No neighbouring enemy pieces check neighbours for 
                     # an empty space
                     for i in neighs:
                         if (self.get_unit_at_pos(i) == None):
-                            path.append(i)
+                            if self.map._tile_exists(i):
+                                path.append(i)
                 return path
 
 
@@ -108,21 +106,38 @@ class Gameplay(Sprite):
         for i in neighbourOld:
             if i in neighbourNew:
                 Pieces.deactivate(self.get_unit_at_pos(i))
+        list0 = []
+        list1 = []
+        for i in Pieces.active_units:
+            if i.team == 0:
+                list0.append(i)
+            else:
+                list1.append(i)
+        if list0 == [] or list1 == []:
+                return ["Over"]
 
         unit.tile_x = position[0]
         unit.tile_y = position[1]
         unit.position = position
         while unit.position in path:
             path.remove(position)
+        #Get rid of old sections of the path
         for i in neighbourOld:
             if i in path:
                 path.remove(i)
-        self.kingME(unit)
-        self.active_units = Pieces.active_units
-        return path
+        #Prevents teleporting across the board if a unit has multiple jumps
+        if not self.can_move(unit):
+            path = []
+        else:
+
+            self.kingME(unit)
+            self.active_units = Pieces.active_units
+            return path
 
     def kingME (self, unit):
-        
+        """
+        Updates the unit type and image if he is a king
+        """
         if ((unit.team == 0 and unit.position[1] == 7) or 
             (unit.team == 1 and unit.position[1] == 0)):
             unit.type = "King"
@@ -132,7 +147,9 @@ class Gameplay(Sprite):
         
  
     def jump(self, new_pos, unit, jump_path):
-        # calculate jump
+        """
+        Calculates the path of a jump
+        """
         
         jump_path.append(new_pos)
         neighs = self.map.neighbours(new_pos)
@@ -174,7 +191,8 @@ class Gameplay(Sprite):
                         if self.get_unit_at_pos(open_areas[i]) == None:
                             # can't travel back to spot already travelled
                             if open_areas[i] not in jump_path:
-                                self.jump(open_areas[i], unit, jump_path)
+                                if self.map._tile_exists(open_areas[i]):
+                                    self.jump(open_areas[i], unit, jump_path)
             return jump_path    
 
 

@@ -1,5 +1,5 @@
 import sys, pygame, tiles, checkers
-from Gui import GUI
+from Gui import *
 from checkers.pieces import *
 from gameplay import *
 from Ai import AI
@@ -44,33 +44,54 @@ while 1:
         elif event.type == pygame.MOUSEBUTTONUP:
             tile_x,tile_y = main_gui.on_click(event)
             
+            #Have we chosen heads or tails
             if main_gui.select_state == True:
                 
+                #Get position of click
                 unitnew = gameplay.get_unit_at_pos((tile_x, tile_y))
                 
                 if not unitnew == None:
+                    
+                    #This allows gui to outline selected unit
+                    main_gui.sel_unit = unitnew
                     if unitnew.team == main_gui.current_team:
-                        print(main_gui.current_team)
+
+                        #If there is a path available find it and send to Gui
                         path = gameplay.set_path((tile_x, tile_y))
                         main_gui.moveable_tiles = path
                         print(path)
+                        
+                        #Sets highlights for the path
                         main_gui.draw_path()
+                        
+                        #Need to know for movement
                         unitold = unitnew
        
                 elif not path == None:
                     if (tile_x, tile_y) in path:
+                        #Move the active units, return remaining path
                         path = gameplay.move((tile_x, tile_y), unitold, path)
+                    
+                    
                     if path == []:
                         #Returns None so that there is no path
                         path = main_gui.end_turn_processed()  
-                if main_gui.current_team == 1:
-                    while path == None or len(path) < 1:
-                        unit = ai.move()
-                        path = gameplay.set_path(unit.position)
-                    path = gameplay.move(path[0], unit, path)
-                    if path == []:
-                        path = main_gui.end_turn_processed()
                         
+        if main_gui.current_team == 1:
+            while path == None or len(path) < 1:
+                #selects an active_unit on its team and finds its path
+                unit = ai.move()
+                path = gameplay.set_path(unit.position)
+
+                #If AI has a "double-jump" it requires unit to click between
+                #jumps
+            path = gameplay.move(path[0], unit, path)
+            if path == []:
+                path = main_gui.end_turn_processed()
+    
+    if path == ["Over"]:
+        main_gui.win_team = main_gui.current_team
+        main_gui.mode = Modes.GameOver
     main_gui.update()
     main_gui.draw(gameplay.active_units)
     clock.tick(60)

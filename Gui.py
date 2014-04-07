@@ -30,11 +30,9 @@ SELECT_COLOR = (255, 255, 0, 255)
 UNMOVED_COLOR = (0, 0, 0, 255)
 MOVE_COLOR_A = (0, 0, 160, 120)
 MOVE_COLOR_B = (105, 155, 255, 160)
-ATK_COLOR_A = (255, 0, 0, 140)
-ATK_COLOR_B = (220, 128, 0, 180)
 
 # RGB colors for the GUI
-FONT_COLOR = (0, 0, 0)
+FONT_COLOR = (250, 0, 0)
 BAR_COLOR = (150, 150, 150)
 OUTLINE_COLOR = (50, 50, 50)
 BUTTON_HIGHLIGHT_COLOR = (255, 255, 255)
@@ -43,7 +41,7 @@ BUTTON_DISABLED_COLOR = (64, 64, 64)
 
 # Names for the different teams
 TEAM_NAME = {
-    0: "black",
+    0: "grey",
     1: "red"
 }
 
@@ -53,12 +51,21 @@ class Modes:
 Button = namedtuple('Button', ['slot', 'text', 'onClick', 'condition'])
 
 class GUI(LayeredUpdates):
+    """
+    A large portion of code from the GUI was taken from assignment 4. The 
+    biggest modification from assignment 4 however is the introduction of
+    INSERT NAME design into the 
+    """
     num_instances = 0
 
     def Simulation_pressed(self):
+        """
+        A future milestone to have two AI's play against each other.
+        """
         pass
 
     def HeadsPressed(self):
+        #Button can only be pressed once
         if not self.can_choose():
             return
         else:
@@ -74,16 +81,19 @@ class GUI(LayeredUpdates):
                 self.end_turn_processed()
         
     def TailsPressed(self):
+        #Button can only be pressed once
         if not self.can_choose():
             return
         else:
             tails = random.randint(0,1)
             x = random.randint(0,1)
             if x == tails:
+                #Player goes first
                 self.select_state = True
                 return
 
             else:
+                #Computer goes first
                 self.select_state = True
                 self.end_turn_processed()
 
@@ -133,13 +143,10 @@ class GUI(LayeredUpdates):
         self.buttons = [
             Button(0, "Heads", self.HeadsPressed, self.can_choose),
             Button(1, "Tails", self.TailsPressed, self.can_choose),
-            Button(2, "AI V.S.", self.Simulation_pressed, None)]
+            Button(2, "Choose Below", self.Simulation_pressed, None)]
         
         # We start in select mode
         self.mode = Modes.Select
-
-        # This will store effects which are drawn over everything else
-        self._effects = pygame.sprite.Group()
 
     def load_level(self, filename):
         """
@@ -261,14 +268,13 @@ class GUI(LayeredUpdates):
                     # If the button is enabled and has a click function, call
                     # the function
                     if ((not button.condition or button.condition()) and self.get_button_rect(button).collidepoint(e.pos)):
-                        print("yes")
+                        
                         button.onClick()
                 #Click was off of the tile grid return a values that won't
                 #effect the game
                 return 9, 9
         else:
             return 9, 9
-            print("Broked")
                         
 
     def draw(self, active_units):
@@ -286,13 +292,14 @@ class GUI(LayeredUpdates):
             u.rect.x,u.rect.y = self.update_unit_rect(u)
         active_units.draw(self.screen)
         
+        """
         # If there's a selected unit, outline it
         if self.sel_unit:
             pygame.gfxdraw.rectangle(
                 self.screen,
                 self.sel_unit.rect,
                 SELECT_COLOR)
-
+        """
         for i in self.buttons:
             self.draw_bar_button(i)
 
@@ -302,6 +309,9 @@ class GUI(LayeredUpdates):
             win_text = "TEAM {} WINS!".format(
                 TEAM_NAME[self.win_team].upper())
             
+            #Clear Highlights
+            self.map.clear_highlights()
+
             # Render the text
             win_msg = BIG_FONT.render(
                 win_text,
@@ -424,6 +434,5 @@ class GUI(LayeredUpdates):
 
     def draw_path(self):
         # Highlight those squares
-        print("I wanna die")
         self.map.set_highlight(
             "move", MOVE_COLOR_A, MOVE_COLOR_B, self.moveable_tiles)
