@@ -2,7 +2,7 @@ import sys, pygame, tiles, checkers
 from Gui import *
 from checkers.pieces import *
 from gameplay import *
-from Ai import AI
+from Ai import *
 
 RESOLUTION = pygame.Rect(0, 0, 800, 600)
 BG_COLOR = (32, 32, 32)
@@ -25,7 +25,7 @@ for i in new_units:
     Checkers = Pieces(i[0],i[1],i[2],i[3])
 
 gameplay = Gameplay(main_gui.map, Checkers.active_units)
-ai = AI(Checkers.active_units)
+ai = SmartAI(gameplay)
 
 path = None
 
@@ -78,14 +78,13 @@ while 1:
                         path = main_gui.end_turn_processed()  
                         
         if main_gui.current_team == 1:
-            while path == None or len(path) < 1:
-                #selects an active_unit on its team and finds its path
-                unit = ai.move()
-                path = gameplay.set_path(unit.position)
+            #selects an active_unit on its team and finds its path
+            unit, path = ai.find_path()
 
-                #If AI has a "double-jump" it requires unit to click between
-                #jumps
-            path = gameplay.move(path[0], unit, path)
+            #If AI has a "double-jump" it requires unit to click between
+            #jumps
+            if not path == []:
+                path = gameplay.move(path[0], unit, path)
             if path == ["Done"]:
                 path = main_gui.end_turn_processed()
     

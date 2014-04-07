@@ -127,9 +127,11 @@ class Gameplay(Sprite):
                 path.remove(i)
         #Prevents teleporting across the board if a unit has multiple jumps
         if not self.can_move(unit):
-            path = []
+            path = ["Done"]
+            return path
         else:
-
+            if path == []:
+                path =["Done"]
             self.kingME(unit)
             self.active_units = Pieces.active_units
             return path
