@@ -80,10 +80,11 @@ while 1:
         if main_gui.current_team == 1:
             #selects an active_unit on its team and finds its path
             unit, path = ai.find_path()
-
+            print(path)
             #If AI has a "double-jump" it requires unit to click between
             #jumps
             if not path == []:
+                print("HI")
                 path = gameplay.move(path[0], unit, path)
             if path == ["Done"]:
                 path = main_gui.end_turn_processed()

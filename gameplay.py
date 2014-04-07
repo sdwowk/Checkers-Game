@@ -75,6 +75,9 @@ class Gameplay(Sprite):
                             else:
                                 if i[1] > position[1]:
                                     path.append(i)
+                    while position in path:
+                        path.remove(position)
+
                 return path
                 
             elif unit.type == "King":
@@ -96,10 +99,15 @@ class Gameplay(Sprite):
                         if (self.get_unit_at_pos(i) == None):
                             if self.map._tile_exists(i):
                                 path.append(i)
+                    while position in path:
+                        path.remove(position)
+
                 return path
 
 
     def move(self,position, unit, path):
+        print("Moving")
+        print(unit.team)
         neighbourNew, neighbourOld = self.map.neighbours(position), self.map.neighbours(unit.position)
         while unit.position in path:
             path.remove(unit.position)
