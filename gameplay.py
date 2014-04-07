@@ -82,58 +82,71 @@ class Gameplay(Sprite):
         path = []
         pawn_neighs = []
         unit = self.get_unit_at_pos(position)
-        neighs = self.map.neighbours(position)
-        #check to see if there is a jump
-        for i in neighs:
-            pawn_neighs.append(self.get_unit_at_pos(i))
+        if not self.can_move(unit):
+            return []
+        else:
 
-        if unit.type == "Pawn":
-            #Check neighbours to see if there is a possible jump
-            for i in pawn_neighs:   
-                if not i == None:
-                    if not i.team == unit.team:
-                        path = jump(position)
+            neighs = self.map.neighbours(position)
+
+            #check to see if there is a jump
+            for i in neighs:
+                pawn_neighs.append(self.get_unit_at_pos(i))
+
+            if unit.type == "Pawn":
+
+                #Check neighbours to see if there is a possible jump
+                for i in pawn_neighs:   
+                    if not i == None:
+                        if not i.team == unit.team:
+                            path = jump(position)
                         
             
-            if len(path) >= 1:
-                while not path == [] and path[0] == position:
-                #Dont want starting postion in the path
-                    path.remove(path[0])
-
-            if path == []:
-            #No neighbouring enemy pieces check neighbours for an empty space
-                for i in neighs:
-                    if (self.get_unit_at_pos(i) == None):
-                        #Can't go backwards. If moving upwards you are 
-                        #actually going in negative direction.
+                if len(path) >= 1:
+                    while not path == [] and path[0] == position:
+                        
+                            #Dont want starting postion in the path
+                        path.remove(path[0])
+                        
+                if path == []:
+                    #No neighbouring enemy pieces check neighbours for 
+                    # an empty space
+                    for i in neighs:
+                        if (self.get_unit_at_pos(i) == None):
+                            
+                            #Can't go backwards. If moving upwards you 
+                            #are actually going in negative direction.
                             if unit.team == 1:
                                 if i[1] < position[1]:
                                     path.append(i)
                             else:
                                 if i[1] > position[1]:
                                     path.append(i)
-            return path
-
-        elif unit.type == "King":
+                return path
+                
+            elif unit.type == "King":
             
-            #Check neighbours to see if there is a possible jump
-            for i in pawn_neighs:   
-                if not i == None:
-                    if not i.team == unit.team:
-                        path = jump(position)
+                #Check neighbours to see if there is a possible jump
+                for i in pawn_neighs:   
+                    if not i == None:
+                        if not i.team == unit.team:
+                            path = jump(position)
+                            
+                if len(path) == 1:
+                    if path[0] == position:
+                        #If no jumps available check neighbours for an 
+                        # empty space
+                        for i in neighs:
+                            if (self.get_unit_at_pos(i) == None):
+                                path.append(i)
+                    
+                elif path == []:
 
-            if len(path) == 1:
-                if path[0] == position:
-                #If no jumps available check neighbours for an empty space
+                    #No neighbouring enemy pieces check neighbours for 
+                    # an empty space
                     for i in neighs:
                         if (self.get_unit_at_pos(i) == None):
                             path.append(i)
-            elif path == []:
-            #No neighbouring enemy pieces check neighbours for an empty space
-                for i in neighs:
-                    if (self.get_unit_at_pos(i) == None):
-                        path.append(i)
-            return path
+                return path
 
 
     def move(self,position, unit, path):
@@ -164,3 +177,49 @@ class Gameplay(Sprite):
             unit.image = pygame.image.load("assets/"+unit.piece+".png")
             unit.image = pygame.transform.scale(unit.image, (80,80))
         
+
+    def can_move(self, unit):
+	"""
+	Check to see if there is a jump available to one of the units.
+	If so and the incorrect unit is select it returns False. If no 
+	jump is available, or a jump exists for the unit, it returns True. 
+	"""
+
+        jumpable_units = []
+        
+	for i in self.active_units:
+
+            #Only check the units on current team
+            pawn_neighs = []
+            if i.team == unit.team:
+                neighs = self.map.neighbours(i.position)
+                
+                #check to see if there is a jump
+                for u in neighs:
+                    pawn_neighs.append(self.get_unit_at_pos(u))
+                    
+                    if unit.type == "Pawn":
+                        
+                        #Check neighbours to see if there is a possible jump
+                        for j in pawn_neighs:
+                            if not j == None:
+                                if not j.team == unit.team:
+                                    if unit.team == 1:
+                                        if j.tile_y < unit.tile_y:
+                                            moveable_units.append(i)
+                                    else:
+                                        if j.tile_y > unit.tile_y:
+                                            moveable_units.append(i)
+                                            
+                    elif unit.type == "King":
+			#Check neighbours to see if there is a possible jump
+                        for j in pawn_neighs:   
+                            if not j == None:
+                                if not j.team == unit.team:
+                                    moveable_units.append(i)
+                                    
+                                    
+        if unit in moveable_units or moveable_units == []:
+            return True
+	else:
+            return False
