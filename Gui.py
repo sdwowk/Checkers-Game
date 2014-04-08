@@ -9,7 +9,7 @@ from collections import namedtuple
 MAP_WIDTH = 640
 BAR_WIDTH = 160
 BUTTON_HEIGHT = 50
-CENTER = 100
+CENTER = 80
 
 # Set the fonts
 pygame.font.init()
@@ -21,9 +21,6 @@ BIG_FONT.set_bold(True)
 
 # padding for left and top side of the bar
 PAD = 6
-
-# Speed of reticle blinking
-RETICLE_RATE = 0.02
 
 # RGBA colors for grid stuff
 SELECT_COLOR = (255, 255, 0, 255)
@@ -54,13 +51,14 @@ class GUI(LayeredUpdates):
     """
     A large portion of code from the GUI was taken from assignment 4. The 
     biggest modification from assignment 4 however is the introduction of
-    INSERT NAME design into the 
+    a model view controller design to the GUI.
     """
     num_instances = 0
 
     def Simulation_pressed(self):
         """
         A future milestone to have two AI's play against each other.
+        Used to ask user to select Heads or Tails at this point in time.
         """
         pass
 
@@ -150,7 +148,8 @@ class GUI(LayeredUpdates):
 
     def load_level(self, filename):
         """
-        Loads a map from the given filename.
+        Loads a map from the given filename. Modified from assignment four to
+        work properly with MVC design
         """
         self.remove(self.map)
         
@@ -244,7 +243,7 @@ class GUI(LayeredUpdates):
     def on_click(self, e):
         """
         This is called when a click event occurs.
-        e is the click event.
+        e is the click event. Modified from assignment four.
         """
         # Don't react when in move, attack or game over mode.
         if (self.mode == Modes.GameOver):
@@ -279,7 +278,8 @@ class GUI(LayeredUpdates):
 
     def draw(self, active_units):
         """
-        Render the display.
+        Render the display. Modified code from assignment four to be more
+        applicable to checkers.
         """
         # Fill in the background
         self.screen.fill(self.bg_color)
@@ -292,14 +292,6 @@ class GUI(LayeredUpdates):
             u.rect.x,u.rect.y = self.update_unit_rect(u)
         active_units.draw(self.screen)
         
-        """
-        # If there's a selected unit, outline it
-        if self.sel_unit:
-            pygame.gfxdraw.rectangle(
-                self.screen,
-                self.sel_unit.rect,
-                SELECT_COLOR)
-        """
         for i in self.buttons:
             self.draw_bar_button(i)
 
@@ -331,6 +323,7 @@ class GUI(LayeredUpdates):
     def draw_bar_title(self, text, line_num):
         """
         Draws a title at a specified line number with the specified text.
+        Same as in assignment four.
         """
         title_text = FONT.render(text, True, FONT_COLOR)
         self.screen.blit(
@@ -340,7 +333,8 @@ class GUI(LayeredUpdates):
 
     def draw_bar_div_line(self, line_num):
         """
-        Draws a dividing line at a specified line number.
+        Draws a dividing line at a specified line number. Same as in assignment
+        four.
         """
         y = FONT_SIZE * line_num + FONT_SIZE//2 + PAD
         pygame.draw.line(
@@ -352,6 +346,7 @@ class GUI(LayeredUpdates):
     def get_button_rect(self, button):
         """
         Gets the rectangle bounding a button in screen cordinates.
+        Same as in assignment four.
         """
         # The y-coordinate is based on its slot number
         y = self.screen.get_height() - BUTTON_HEIGHT * (button.slot + 1)
@@ -364,7 +359,7 @@ class GUI(LayeredUpdates):
         """
         Renders a button to the bar.
         If the mouse is hovering over the button it is rendered in white,
-        else rgb(50, 50, 50).
+        else rgb(50, 50, 50). Modified from assignment four for our purposes
         """
 
         but_rect = self.get_button_rect(button)
@@ -399,7 +394,6 @@ class GUI(LayeredUpdates):
             (self.bar_rect.centerx - (but_text.get_width()/2),
             but_rect.y + (BUTTON_HEIGHT//2) - but_text.get_height()//2))
 
-    @property
     def cur_team(self):
         """
         Gets the current team based on the turn.
@@ -408,7 +402,6 @@ class GUI(LayeredUpdates):
 
     def can_choose(self):
         
-
         return not self.select_state
 
         
@@ -426,6 +419,7 @@ class GUI(LayeredUpdates):
     def update_unit_rect(self, unit):
         """
         Scales a unit's display rectangle to screen coordiantes.
+        Same as in assignment four
         """
         rect = []
         x, y = unit.tile_x, unit.tile_y
@@ -433,6 +427,6 @@ class GUI(LayeredUpdates):
         return screen_x, screen_y
 
     def draw_path(self):
-        # Highlight those squares
+        # Highlight squares of a path
         self.map.set_highlight(
             "move", MOVE_COLOR_A, MOVE_COLOR_B, self.moveable_tiles)

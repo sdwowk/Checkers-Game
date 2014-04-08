@@ -61,6 +61,9 @@ class SmartAI:
         return False
                         
     def can_jump(self, unit, dest, dest_unit):
+        """
+        Calculates whether or not a unit can jump.
+        """
 
         i = dest
 
