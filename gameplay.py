@@ -106,8 +106,6 @@ class Gameplay(Sprite):
 
 
     def move(self,position, unit, path):
-        print("Moving")
-        print(unit.team)
         neighbourNew, neighbourOld = self.map.neighbours(position), self.map.neighbours(unit.position)
         while unit.position in path:
             path.remove(unit.position)
@@ -136,6 +134,8 @@ class Gameplay(Sprite):
         #Prevents teleporting across the board if a unit has multiple jumps
         if not self.can_move(unit):
             path = ["Done"]
+            self.kingME(unit)
+            self.active_units = Pieces.active_units
             return path
         else:
             if path == []:
@@ -148,8 +148,8 @@ class Gameplay(Sprite):
         """
         Updates the unit type and image if he is a king
         """
-        if ((unit.team == 0 and unit.position[1] == 7) or 
-            (unit.team == 1 and unit.position[1] == 0)):
+        if ((unit.team == 0 and unit.tile_y == 7) or 
+            (unit.team == 1 and unit.tile_y == 0)):
             unit.type = "King"
             unit.piece = unit.type + str(unit.team)
             unit.image = pygame.image.load("assets/"+unit.piece+".png")

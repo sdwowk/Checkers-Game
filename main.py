@@ -59,7 +59,6 @@ while 1:
                         #If there is a path available find it and send to Gui
                         path = gameplay.set_path((tile_x, tile_y))
                         main_gui.moveable_tiles = path
-                        print(path)
                         
                         #Sets highlights for the path
                         main_gui.draw_path()

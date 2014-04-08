@@ -59,7 +59,6 @@ while 1:
                         #If there is a path available find it and send to Gui
                         path = gameplay.set_path((tile_x, tile_y))
                         main_gui.moveable_tiles = path
-                        print(path)
                         
                         #Sets highlights for the path
                         main_gui.draw_path()
@@ -80,15 +79,24 @@ while 1:
         if main_gui.current_team == 1:
             #selects an active_unit on its team and finds its path
             unit, path = ai.find_path()
-            print(path)
+            
+            #Special case where a unit is still alive but has no move available
+            # moves.
+            if path == ["Over"] and unit == None:
+                path = main_gui.end_turn_processed()
+                path = ["Over"]
+
+
             #If AI has a "double-jump" it requires unit to click between
             #jumps
-            if not path == []:
-                print("HI")
+            if not path == [] and not unit == None and not path == ["Over"]:
                 path = gameplay.move(path[0], unit, path)
+
             if path == ["Done"]:
                 path = main_gui.end_turn_processed()
-    
+            
+ 
+
     if path == ["Over"]:
         main_gui.win_team = main_gui.current_team
         main_gui.mode = Modes.GameOver

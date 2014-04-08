@@ -132,7 +132,6 @@ class SmartAI:
                 good_moves[k] = v
 
         if good_moves:
-            print("Good")
             maxpath = []
             unit = 0
             for k,v in good_moves.items():
@@ -141,11 +140,15 @@ class SmartAI:
                     unit = k
             return  unit, maxpath
         else:
-            print("BAD")
             maxpath = []
             unit = 0
             for k,v in bad_moves.items():
                 if len(v) >= len(maxpath):
                     maxpath = v
                     unit = k
+                    
+            if maxpath == []:
+                path = ["Over"]
+                unit = None
+                return unit, path
             return unit, maxpath

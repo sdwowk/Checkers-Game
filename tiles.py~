@@ -276,18 +276,18 @@ class TileMap(Sprite):
         >>> t.load_from_file("GameBoard/CheckersBoard.gif")
         >>> t.neighbours((0, 0))
         [(1, 1)]
-        >>> t.neighbours((4, 4)) == [(5, 3), (5, 5), (3, 5), (3, 3)]
+        >>> t.neighbours((4, 4)) == [(5, 5), (3, 5), (5, 3), (3, 3)]
         True
-        >>> t.neighbours((1, 1)) == [(2, 0), (2, 2), (0, 2), (0, 0)]
+        >>> t.neighbours((1, 1)) == [(2, 2), (0, 2), (2, 0), (0, 0)]
         True
         """
         x, y = coords
         
         # The possible neighbouring tiles.
         neighbours = [
-            (x + 1, y - 1),
-            (x + 1, y+1),
+            (x + 1, y + 1),
             (x - 1, y+1),
+            (x + 1, y-1),
             (x - 1, y - 1)
         ]
         
@@ -301,19 +301,7 @@ class TileMap(Sprite):
         It will be stored under the given name.
         """
         self._highlights[name] = (tiles, colorA, colorB)
-                
-        # draw the highlights
-        for name, (tiles, colorA, colorB) in self._highlights.items():
-            for coord in tiles:
-                tile_rect = pygame.Rect(
-                    coord[0] * self._tile_width,
-                    coord[1] * self._tile_height,
-                    self._tile_width,
-                    self._tile_height
-                )
-                pygame.gfxdraw.box(self.image,
-                                   tile_rect,
-                                   self._get_highlight_color(colorA, colorB))
+
         
     def remove_highlight(self, name):
         """
@@ -338,6 +326,20 @@ class TileMap(Sprite):
         self.image = self._base_image.copy()
 
             
+                
+        # draw the highlights
+        for name, (tiles, colorA, colorB) in self._highlights.items():
+            for coord in tiles:
+                tile_rect = pygame.Rect(
+                    coord[0] * self._tile_width,
+                    coord[1] * self._tile_height,
+                    self._tile_width,
+                    self._tile_height
+                )
+                pygame.gfxdraw.box(self.image,
+                                   tile_rect,
+                                   self._get_highlight_color(colorA, colorB))
+
         # draw the grid
         for x in range(0,
                         self._map_width,
@@ -360,115 +362,4 @@ class TileMap(Sprite):
                 GRID_COLOR
             )
     
-def better_tile(a, b, start, end):
-    """
-    Picks the best tile to use. This is used in case of a tie in the
-    priority queue. Returns True if choosing tile a, or False for tile b.
-    The tile with the closest slope to the slope between start and end
-    will be given priority. If there's still a tie, the tile with the
-    lowest Y is chosen. Finally, if that fails, the tile with the lowest
-    X is chosen.
-    
-    Examples:
-    The best tile here is (1, 1), as it lies directly on the line:
-    >>> better_tile((1, 1), (1, 2), (0, 0), (3, 3))
-    True
-    
-    The best tile here is (1, 4), as it lies closer to the line:
-    >>> better_tile((1, 1), (1, 4), (0, 3), (3, 3))
-    False
-    
-    Both tiles are equidistant to the line, so we choose the lowest Y,
-    (1, 0):
-    >>> better_tile((0, 1), (1, 0), (0, 0), (3, 3))
-    False
-    
-    Both tiles are equidistant to the line and have equal Y, so we
-    choose the lowest X, (3, 1):
-    >>> better_tile((3, 1), (5, 1), (4, 0), (4, 4))
-    True
-    """
-    dist_a = round(helper.squared_segment_dist(a, start, end), 3)
-    dist_b = round(helper.squared_segment_dist(b, start, end), 3)
-    
-    # Choose the lowest difference from the line
-    if dist_a < dist_b:
-        return True
-    elif dist_a > dist_b:
-        return False
-    else:
-        # Still a tie - choose lowest Y
-        if a[1] < b[1]:
-            return True
-        elif a[1] > b[1]:
-            return False
-        else:
-            # Still a tie - choose lowest X
-            if a[0] < b[0]:
-                return True
-            else:
-                return False
-            
-    
-def reachable_tiles(graph,
-                      start,
-                      max_cost,
-                      cost = lambda pos: 1,
-                      passable = lambda pos: True):
-    """
-    Returns a set of nodes which can be reached with a total cost of max_cost.
-    The cost function is how much it costs to leave the given node. This should
-    always be greater than or equal to 1, or shortest path is not guaranteed.
-    The passable function returns whether the given node.
-    
-    Example use:
-    >>> t = TileMap("assets/tiles.png", 20, 20)
-    >>> t.load_from_file("maps/test-2.gif")
-    
-    >>> reachable_tiles(t, (2, 2), 2) == set([(2, 0), (1, 1), (2, 1), (3, 1),
-    ... (0, 2), (1, 2), (2, 2), (3, 2), (4, 2), (1, 3), (2, 3), (3, 3), 
-    ... (2, 4)])
-    True
-    
-    >>> t = TileMap("assets/tiles.png", 20, 20)
-    >>> t.load_from_file("maps/test-3.gif")
-    >>> cost = lambda c: 1
-    >>> passable = lambda c: t.tile_data(c).passable
-   
-    >>> reachable_tiles(t, (2, 0), 6, cost, passable) == set([(3, 0), (2, 0),
-    ... (1, 0), (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 2), (2, 2)])
-    True
-    """
-    # tiles to check (tuples of x, y)
-    todo = pqueue.PQueue()
-    todo.update(start, 0)
-    
-    # tiles we've been to
-    visited = set()
-    
-    # tiles which we can get to within max_cost
-    reachable = set()
-    reachable.add(start)
-    
-    while todo:
-        cur, c = todo.pop_smallest()
-        visited.add(cur)
-        
-        # it's too expensive to get here, so don't bother checking
-        if c > max_cost:
-            continue
-        
-        # check neighbours
-        for n in graph.neighbours(cur):
-            # skip it if it doesn't exist, if we've already checked it, or
-            # if it isn't passable
-            if ((n in visited) or
-                (not passable(n))):
-                continue
-            
-            # try updating the tile's cost
-            new_cost = c + cost(cur)
-            if todo.update(n, new_cost) and new_cost <= max_cost:
-                reachable.add(n)
-    
-    return reachable
+

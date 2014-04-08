@@ -1,0 +1,11 @@
+Scott Wowk 1276067
+Mohamed Salim Ben Khaled
+
+Title:
+Checkers Game with AI
+
+Milestones:
+1. Build the game board GUI (using pygame) and the checkers game in python. Our first milestone is to build the board and make a game that moves the pieces diagonally, forces the player to jump and remove pieces when possible and "kings" players when they get to the end of the board along with the other basic rules of checkers.
+2. Build an AI to play against a person. The AI will do a lookup on possible moves, see if any move will make it vulnerable and try to choose moves that will make it least vulnerable to attacks.
+3. Build an advanced AI. Try to make the best possible AI. The AI will do a lookup on possible moves, and see if it moves a piece into a volatile position if its next turn can counter and put itself into a better position. If not look for a non-volatile position.
+4. Our end goal is to create a better AI than another group in our class. A long shot goal is to create an instance of the game that will allow two AI's to play against each other.
