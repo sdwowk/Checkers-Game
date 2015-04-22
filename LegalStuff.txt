@@ -1,2 +1,0 @@
-Made Board and players on pixieengine.
-Board turned to gif on gifmaker.me

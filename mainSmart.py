@@ -103,4 +103,3 @@ while 1:
     main_gui.update()
     main_gui.draw(gameplay.active_units)
     clock.tick(60)
- 

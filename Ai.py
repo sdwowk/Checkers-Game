@@ -47,6 +47,9 @@ class SmartAI:
         return team_units
 
     def vulnerable(self, choices, unit):
+        #If we have no path return a bad list key (True, False)
+        if choices == []:
+            return True, False
         #Checks vulnerability within path
         for position in choices:
             neighbours = self.game.map.neighbours(position)
@@ -56,9 +59,12 @@ class SmartAI:
                 
             for i in pawn_neighs:
                 if not i == None:
-                        if self.can_jump(i, position, unit):
-                            return True
-        return False
+                    jumpable,counter_jump = self.can_jump(i, position, unit)
+                    if jumpable and counter_jump == True:
+                        return True, True
+                    elif jumpable == True and counter_jump == False:
+                        return True, False
+        return False, False
                         
     def can_jump(self, unit, dest, dest_unit):
         """
@@ -67,54 +73,86 @@ class SmartAI:
 
         i = dest
 
-        if self.game.can_move(unit):
-            #Kings are not dependant on team
-            if unit.type == "King":
-                if unit.tile_x > i[0]:
-                    if unit.tile_y > i[1]:
-                        pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]-1)))
+        #Kings are not dependant on team
+        if unit.type == "King":
+            if unit.tile_x > i[0]:
+                if unit.tile_y > i[1]:
+                    pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]-1)))
+                    if pos_move == None or pos_move == dest_unit:
+                        counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]-2)))
+                        if counter == None or not counter.team == unit.team:
+                            return True, True
+                        else:
+                            return True, False
+                else:
+                    pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]+1)))
+                    if pos_move == None or pos_move == dest_unit:
+                        counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]+2)))
+                        if counter == None or not counter.team == unit.team:
+                            return True, True
+                        else:
+                            return True, False
+            else:
+                if unit.tile_y > i[1]:
+                    pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]-1)))
+                    if pos_move == None or pos_move == dest_unit:
+                        counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]-2)))
+                        if counter == None or not counter.team == unit.team:
+                            return True, True
+                        else:
+                            return True, False
+
+                else:
+                    pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]+1)))
+                    if pos_move == None or pos_move == dest_unit:
+                        counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]+2)))
+                        if counter == None or not counter.team == unit.team:
+                            return True, True
+                        else:
+                            return True, False
+
+            #Team 0 pawn
+        elif unit.team == 0:
+            if dest_unit.team == 1:
+                if unit.tile_y < i[1]:
+                    if i[0] > unit.tile_x:
+                        pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]+1)))
                         if pos_move == None or pos_move == dest_unit:
-                            return True
+                            counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]+2)))
+                            if counter == None or not counter.team == unit.team:
+                                return True, True
+                            else:
+                                return True, False
                     else:
                         pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]+1)))
                         if pos_move == None or pos_move == dest_unit:
-                            return True
-                else:
-                    if unit.tile_y > i[1]:
+                            counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]+2)))
+                            if counter == None or not counter.team == unit.team:
+                                return True, True
+                            else:
+                                return True, False
+            #Team 1 pawn
+        else:
+            if unit.tile_y > i[1]:
+                if dest_unit.team == 0:
+                    if i[0] > unit.tile_x:
+                        pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1] -1)))
+                        if pos_move == None or pos_move == dest_unit:
+                            counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]-2)))
+                            if counter == None or not counter.team == unit.team:
+                                return True, True
+                            else:
+                                return True, False
+                    else:
                         pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]-1)))
                         if pos_move == None or pos_move == dest_unit:
-                            return True
-                    else:
-                        pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]+1)))
-                        if pos_move == None or pos_move == dest_unit:
-                            return True
+                            counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]-2)))
+                            if counter == None or not counter.team == unit.team:
+                                return True, True
+                            else:
+                                return True, False
 
-            #Team 0 pawn
-            elif unit.team == 0:
-                if dest_unit.team == 1:
-                    if unit.tile_y < i[1]:
-                        if i[0] > unit.tile_x:
-                            pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]+1)))
-                            if pos_move == None or pos_move == dest_unit:
-                                return True
-                        else:
-                            pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]+1)))
-                            if pos_move == None or pos_move == dest_unit:
-                                return True
-            #Team 1 pawn
-            else:
-                if unit.tile_y > i[1]:
-                    if dest_unit.team == 0:
-                        if i[0] > unit.tile_x:
-                            pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1] -1)))
-                            if pos_move == None or pos_move == dest_unit:
-                                return True
-                        else:
-                            pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]-1)))
-                            if pos_move == None or pos_move == dest_unit:
-                                return True
-
-        return False
+        return False, False
 
     def find_path(self):
         memo = {}
@@ -123,11 +161,16 @@ class SmartAI:
             memo[i] = self.game.set_path(i.position)
         
         bad_moves = {}
+        med_moves = {}
         good_moves = {}
 
         for (k,v) in memo.items():
-            if v == [] or self.vulnerable(v, k) == True:
-                bad_moves[k] = v
+            vulnerable, counter_jump = self.vulnerable(v, k)
+            if v == [] or vulnerable == True:
+                if counter_jump:
+                    med_moves[k] = v
+                else:
+                    bad_moves[k] = v
             else:
                 good_moves[k] = v
 
@@ -135,20 +178,46 @@ class SmartAI:
             maxpath = []
             unit = 0
             for k,v in good_moves.items():
-                if len(v) >= len(maxpath):
+                if len(v) > len(maxpath):
                     maxpath = v
                     unit = k
+                elif len(v) == len(maxpath):
+                    x = [maxpath,v]
+                    maxpath = random.choice(x)
+                    if v == maxpath:
+                        unit = k
+            print("good")
             return  unit, maxpath
+        elif med_moves:
+            maxpath = []
+            unit = 0
+            for k,v in med_moves.items():
+                if len(v) > len(maxpath):
+                    maxpath = v
+                    unit = k
+                elif len(v) == len(maxpath):
+                    x = [maxpath, v]
+                    maxpath = random.choice(x)
+                    if v == maxpath:
+                        unit = k
+            print("med")
+            return unit, maxpath
         else:
             maxpath = []
             unit = 0
             for k,v in bad_moves.items():
-                if len(v) >= len(maxpath):
+                if len(v) > len(maxpath):
                     maxpath = v
                     unit = k
+                elif len(v) == len(maxpath):
+                    x = [maxpath,v]
+                    maxpath = random.choice(x)
+                    if v == maxpath:
+                        unit = k
                     
             if maxpath == []:
                 path = ["Over"]
                 unit = None
                 return unit, path
+            print("bad")
             return unit, maxpath

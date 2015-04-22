@@ -1,4 +1,0 @@
-import tiles, pygame, sys
-from Gui import GUI
-from checkers.pieces import *
-from gameplay import *

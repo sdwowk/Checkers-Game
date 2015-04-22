@@ -16,19 +16,22 @@ class Gameplay(Sprite):
 
     def get_unit_at_pos(self, pos):
         """
-        Returns the active unit at the given tile position, or None if no unit
-        is present.
+        Returns the active unit at the given tile position, or None if no 
+        unit is present.
         """
-        #check to have position in tulbe or two seperate variables
+
+        #Check to have position in tuple or two seperate variables
         for u in self.active_units:
-            if (u.tile_x, u.tile_y) == pos:
+            if (u.position) == pos:
                 return u
             
         return None
 
     def set_path(self, position):
         """
-        Finds the path for a unit.
+        Finds the path for a unit. Calls the jump method which uses recursion
+        to compute the path if a jump is available. Returns an empty path
+        if there is no move for the unit or if another unit has a jump.
         """
        
         path = []
@@ -106,41 +109,73 @@ class Gameplay(Sprite):
 
 
     def move(self,position, unit, path):
-        neighbourNew, neighbourOld = self.map.neighbours(position), self.map.neighbours(unit.position)
-        while unit.position in path:
-            path.remove(unit.position)
-        for i in neighbourOld:
-            if i in neighbourNew:
-                Pieces.deactivate(self.get_unit_at_pos(i))
-        list0 = []
-        list1 = []
-        for i in Pieces.active_units:
-            if i.team == 0:
-                list0.append(i)
-            else:
-                list1.append(i)
-        if list0 == [] or list1 == []:
-                return ["Over"]
+        """
+        Updates the units position and the path by removing unreachable
+        positions in the original path. Also handles deleting pieces an 
+        whether the game is over.
+        """
 
+        tempunit = unit
+        if not self.is_reachable(unit,position):
+            return path
+        else:
+            neighbourNew, neighbourOld = self.map.neighbours(position), self.map.neighbours(unit.position)
+
+            #Delete any occurence of the units old position
+            while unit.position in path:
+                path.remove(unit.position)
+
+            #If there is the same neighbour in both the new and old positions
+            # a jump has ocurred and the jumped unit must be removed.
+            for i in neighbourOld:
+                if i in neighbourNew:
+                    Pieces.deactivate(self.get_unit_at_pos(i))
+                if i in path:
+                    path.remove(i)
+            list0 = []
+            list1 = []
+            for i in Pieces.active_units:
+                if i.team == 0:
+                    list0.append(i)
+                else:
+                    list1.append(i)
+            if list0 == [] or list1 == []:
+                return ["Over"]
+ 
+        #updating the unit's positions
         unit.tile_x = position[0]
         unit.tile_y = position[1]
         unit.position = position
+
+       #Get rid of old sections of the path
+        for i in path:
+            #If a position was reachable but now is not remove it from path
+            if (self.is_reachable(tempunit, i) and not 
+                self.is_reachable(unit, i)):
+                path.remove(i)
+
+
+
+        #Delete the new position from path, to make sure the piece can't 
+        #travel back over the same position in a single turn
         while unit.position in path:
             path.remove(position)
-        #Get rid of old sections of the path
-        for i in neighbourOld:
-            if i in path:
-                path.remove(i)
-        #Prevents teleporting across the board if a unit has multiple jumps
-        if not self.can_move(unit):
+
+        #Update units
+        self.active_units = Pieces.active_units
+
+        if path == []:
             path = ["Done"]
+            
+            #Check to see if the piece is a king
             self.kingME(unit)
             self.active_units = Pieces.active_units
             return path
         else:
-            if path == []:
-                path =["Done"]
             self.kingME(unit)
+
+            if not self.can_move(unit):
+                path = ["Done"]
             self.active_units = Pieces.active_units
             return path
 
@@ -158,7 +193,12 @@ class Gameplay(Sprite):
  
     def jump(self, new_pos, unit, jump_path):
         """
-        Calculates the path of a jump
+        Calculates the path of a piece that can jump using recursion. This
+        function does use specific indexing according to the neighbours
+        method in tiles.py. For pawns there is a need to check whether a
+        piece has a piece in front of it, if that piece is from the other 
+        team, if the space behind the jump piece is free and does a team 
+        check to make sure pawns can't move in the wrong direction.
         """
         
         jump_path.append(new_pos)
@@ -182,12 +222,14 @@ class Gameplay(Sprite):
                         if self.get_unit_at_pos(open_areas[i]) == None:
                             if unit.team == 1:
                                 if open_areas[i][1] < new_pos[1]:
-                                    if self.map._tile_exists(open_areas[i]):
-                                        self.jump(open_areas[i], unit, jump_path)
+                                    if open_areas[i] not in jump_path:
+                                        if self.map._tile_exists(open_areas[i]):
+                                            self.jump(open_areas[i], unit, jump_path)
                             else:
                                 if open_areas[i][1] > new_pos[1]:
-                                    if self.map._tile_exists(open_areas[i]):
-                                        self.jump(open_areas[i], unit, jump_path)
+                                    if open_areas[i] not in jump_path:
+                                        if self.map._tile_exists(open_areas[i]):
+                                            self.jump(open_areas[i], unit, jump_path)
             return jump_path    
 
         elif unit.type == "King":
@@ -221,8 +263,12 @@ class Gameplay(Sprite):
             #Only check the units on current team
             if i.team == unit.team:
                 path += self.jump(i.position, i, path)
+
+                #Position of the current piece should not be in the path
                 while i.position in path:
                     path.remove(i.position)
+
+                #If the path is not empty it has a jump available
                 if not path == []:
                     jumpable_units.append(i)
 
@@ -231,3 +277,37 @@ class Gameplay(Sprite):
             return True
         else:
             return False
+
+
+    def is_reachable(self,unit,position):
+        """
+        Used to check if a click on the board is reachable by the current
+        unit. Also used in path clearing since a unit can move at most 2
+        tiles in the x and y direction at one time.
+        """
+
+        dxy = 2
+        if (position[0] <= (unit.tile_x + dxy) and 
+            position[0] >= (unit.tile_x - dxy)):
+
+            if unit.team == 0:
+                if unit.type == "Pawn":
+                    if (position[1] <= unit.tile_y + dxy and 
+                        not unit.tile_y - position[1] == 0):
+                        
+                        return True
+                else:
+                    if (position[1] <= unit.tile_y + dxy and 
+                        position[1] >= unit.tile_y-dxy):
+                        return True
+            else:
+                if unit.type == "Pawn":
+                    if (position[1] >= unit.tile_y - dxy and 
+                        not unit.tile_y - position[1] == 0):
+                        
+                        return True
+                else:
+                    if (position[1] <= unit.tile_y + dxy and
+                        position[1] >= unit.tile_y-dxy):
+                        return True
+        return False

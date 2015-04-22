@@ -43,7 +43,7 @@ TEAM_NAME = {
 }
 
 class Modes:
-    Select, ChooseHeads, ChooseTails, GameOver = range(4)
+    Select, ChooseHeads, ChooseTails, GameOver, EndTurn = range(5)
     
 Button = namedtuple('Button', ['slot', 'text', 'onClick', 'condition'])
 
@@ -141,7 +141,8 @@ class GUI(LayeredUpdates):
         self.buttons = [
             Button(0, "Heads", self.HeadsPressed, self.can_choose),
             Button(1, "Tails", self.TailsPressed, self.can_choose),
-            Button(2, "Choose Below", self.Simulation_pressed, None)]
+            Button(2, "Choose Below", self.Simulation_pressed, None),
+            Button(3, "EndTurn", self.end_turn_processed, None)]
         
         # We start in select mode
         self.mode = Modes.Select
