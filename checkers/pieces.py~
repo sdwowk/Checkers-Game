@@ -19,7 +19,8 @@ class Pieces(Sprite):
         self.tile_x  = tile_x
         self.tile_y = tile_y
         self.position = (tile_x,tile_y)
-        self.type = "Pawns"
+        self.type = "Pawn" 
+        self.piece = self.type + str(self.team)
         self._moving = False
         self._active = False
         self._path = []
@@ -27,7 +28,8 @@ class Pieces(Sprite):
         self.turn_state = [False]
 
         #set required pygame things.
-        self.image = pygame.image.load("assets/Pawns.png")
+        self.image = pygame.image.load("assets/"+self.piece+".png")
+        self.image = pygame.transform.scale(self.image,(80,80))
         self.rect = pygame.Rect(0, 0, SIZE, SIZE)
         self._update_image()
         
@@ -98,13 +100,13 @@ class Pieces(Sprite):
             self._active = True
             Pieces.active_units.add(self)
     
-    def deactivate(self):
+    def deactivate(unit):
         """
         Removes this unit from the active roster.
         """
-        if self._active:
-            self._active = False
-            Pieces.active_units.remove(self)
+        if unit._active:
+            unit._active = False
+            Pieces.active_units.remove(unit)
 
     
 
@@ -164,19 +166,21 @@ class Pieces(Sprite):
             return True
         return False
 
-        def set_path(self, tile_x, tile_y):
+    def set_path(self, tile_x, tile_y):
         """
         Tells the unit that it should be moving, where, and how.
         """
         position = tile_pos()
         if self.type == "Pawn":
-            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team):
+            if ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team) or 
+		(get_unit_at_pos((position[0]+1),(position[1]+1)).team == self.team):
                 #jump function
                 pass   
 
 
         elif self.type == "King":
-            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]-1),(position[1]-1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]-1))).team == self.team):
+            if ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team) or
+ ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]-1),(position[1]-1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]-1))).team == self.team):
                 #jump function
                 pass
 

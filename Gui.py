@@ -6,6 +6,9 @@ from checkers.pieces import *
 from pygame.sprite import LayeredUpdates
 from collections import namedtuple
 
+#Code given in class. Math has been refactored to be more general and use less magic numbers
+
+#Game specific constants
 MAP_WIDTH = 640
 BAR_WIDTH = 160
 BUTTON_HEIGHT = 50

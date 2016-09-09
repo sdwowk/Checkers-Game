@@ -172,13 +172,17 @@ class Pieces(Sprite):
         """
         position = tile_pos()
         if self.type == "Pawn":
-            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team):
+            if ((get_unit_at_pos((position[0]-1),(position[1]+1)).team == self.team) or 
+		(get_unit_at_pos((position[0]+1),(position[1]+1)).team == self.team)):
                 #jump function
                 pass   
 
 
         elif self.type == "King":
-            if                                                                           ((get_unit_at_pos((position[0]-1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]+1))).team == self.team)       or ((get_unit_at_pos((position[0]-1),(position[1]-1))).team == self.team)       or ((get_unit_at_pos((position[0]+1),(position[1]-1))).team == self.team):
+            if ((get_unit_at_pos((position[0]-1),(position[1]+1)).team == self.team) or
+		 (get_unit_at_pos((position[0]+1),(position[1]+1)).team == self.team) or
+		 (get_unit_at_pos((position[0]-1),(position[1]-1)).team == self.team) or
+		 (get_unit_at_pos((position[0]+1),(position[1]-1)).team == self.team)):
                 #jump function
                 pass
 

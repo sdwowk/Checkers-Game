@@ -3,6 +3,8 @@ import pygame.gfxdraw
 from pygame.sprite import Sprite
 from collections import namedtuple
 
+#Code given in class that has been refactored so as not to be game specific
+
 # A container class which stores information about a tile.
 Tile = namedtuple('Tile', ['type',
                            'sprite_id',

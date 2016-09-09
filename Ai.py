@@ -77,7 +77,7 @@ class SmartAI:
         if unit.type == "King":
             if unit.tile_x > i[0]:
                 if unit.tile_y > i[1]:
-                    pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]-1)))
+                    pos_move = self.game.get_unit_at_pos(self.getDownLeftPos(i))
                     if pos_move == None or pos_move == dest_unit:
                         counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]-2)))
                         if counter == None or not counter.team == unit.team:
@@ -85,7 +85,7 @@ class SmartAI:
                         else:
                             return True, False
                 else:
-                    pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]+1)))
+                    pos_move = self.game.get_unit_at_pos(self.getUpLeftPos(i))
                     if pos_move == None or pos_move == dest_unit:
                         counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]+2)))
                         if counter == None or not counter.team == unit.team:
@@ -94,7 +94,7 @@ class SmartAI:
                             return True, False
             else:
                 if unit.tile_y > i[1]:
-                    pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]-1)))
+                    pos_move = self.game.get_unit_at_pos(self.getDownRightPos(i))
                     if pos_move == None or pos_move == dest_unit:
                         counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]-2)))
                         if counter == None or not counter.team == unit.team:
@@ -103,7 +103,7 @@ class SmartAI:
                             return True, False
 
                 else:
-                    pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]+1)))
+                    pos_move = self.game.get_unit_at_pos(self.getUpRightPos(i))
                     if pos_move == None or pos_move == dest_unit:
                         counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]+2)))
                         if counter == None or not counter.team == unit.team:
@@ -116,7 +116,7 @@ class SmartAI:
             if dest_unit.team == 1:
                 if unit.tile_y < i[1]:
                     if i[0] > unit.tile_x:
-                        pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]+1)))
+                        pos_move = self.game.get_unit_at_pos(self.getUpRightPos(i))
                         if pos_move == None or pos_move == dest_unit:
                             counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]+2)))
                             if counter == None or not counter.team == unit.team:
@@ -124,7 +124,7 @@ class SmartAI:
                             else:
                                 return True, False
                     else:
-                        pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1]+1)))
+                        pos_move = self.game.get_unit_at_pos(self.getUpLeftPos(i))
                         if pos_move == None or pos_move == dest_unit:
                             counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]+2)))
                             if counter == None or not counter.team == unit.team:
@@ -136,7 +136,7 @@ class SmartAI:
             if unit.tile_y > i[1]:
                 if dest_unit.team == 0:
                     if i[0] > unit.tile_x:
-                        pos_move = self.game.get_unit_at_pos(((i[0]-1), (i[1] -1)))
+                        pos_move = self.game.get_unit_at_pos(self.getDownLeftPos(i))
                         if pos_move == None or pos_move == dest_unit:
                             counter = self.game.get_unit_at_pos(((i[0]-2), (i[1]-2)))
                             if counter == None or not counter.team == unit.team:
@@ -144,7 +144,7 @@ class SmartAI:
                             else:
                                 return True, False
                     else:
-                        pos_move = self.game.get_unit_at_pos(((i[0]+1), (i[1]-1)))
+                        pos_move = self.game.get_unit_at_pos(self.getDownRightPos(i))
                         if pos_move == None or pos_move == dest_unit:
                             counter = self.game.get_unit_at_pos(((i[0]+2), (i[1]-2)))
                             if counter == None or not counter.team == unit.team:
@@ -221,3 +221,23 @@ class SmartAI:
                 return unit, path
             print("bad")
             return unit, maxpath
+
+    def getUpRightPos(self, position):
+        currentPosition = position
+        
+        return (currentPosition[0]+1,currentPosition[1]+1)
+
+    def getUpLeftPos(self, position):
+        currentPosition = position
+        
+        return (currentPosition[0]-1,currentPosition[1]+1)
+
+    def getDownRightPos(self, position):
+        currentPosition = position
+        
+        return (currentPosition[0]+1,currentPosition[1]-1)
+
+    def getDownLeftPos(self, position):
+        currentPosition = position
+        
+        return (currentPosition[0]-1,currentPosition[1]-1)

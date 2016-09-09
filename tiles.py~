@@ -1,6 +1,5 @@
 import pygame, sys, math
 import pygame.gfxdraw
-import pqueue, helper
 from pygame.sprite import Sprite
 from collections import namedtuple
 
