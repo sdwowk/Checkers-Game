@@ -18,15 +18,8 @@ Checkers Rules and Need to knows:
 		mouse.
 
 	4. Jumping units:
-		If a jump is available to one of the pieces, the user 			must move the piece that can jump.
-
-		**One bug that was not fixed is that if a multiple jump
-		situation for one piece occurs, the user must complete 			the first jump then the second. Otherwise the path will
-		still expect the middle move to be made**
-			*Possible fix rewrite how path is written or
-			 write a new function that checks if the item
-			 is reachable from the click then uses this to
-			 make the correct move in path.*
+		If a jump is available to one of the pieces, the user must move the piece that can jump.
+		To perform a double jump the middle jump must first be performed and then the second
 
 
 The Board and players were made on pixieengine.
