@@ -1,4 +1,4 @@
-Scott Wowk 1276067
+Scott Wowk 
 Mohamed Salim Ben Khaled
 
 Checkers Rules and Need to knows:
