@@ -18,6 +18,7 @@ Mohamed Salim Ben Khaled
 		 make the correct move in path.
  
 **** ANY PROBLEMS GETTING THE GAME TO WORK SEE THIS LINK FOR PROPER INSTALATION OF PYGAME ****
- 
+ http://pygame.org/wiki/CompileUbuntu?parent=Compilation
+
  The Board and players were made on pixieengine.
  The Board was turned into a gif on gifmaker.me
