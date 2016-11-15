@@ -4,28 +4,28 @@ Tile size: 80x80
 Map: GameBoard/CheckersBoard.gif
 
 UNITS START
-Pawns 0 0 0
-Pawns 0 2 0
-Pawns 0 4 0
-Pawns 0 6 0
-Pawns 0 1 1
-Pawns 0 3 1
-Pawns 0 5 1
-Pawns 0 7 1
-Pawns 0 0 2
-Pawns 0 2 2
-Pawns 0 4 2
-Pawns 0 6 2
-Pawns 1 1 5
-Pawns 1 3 5
-Pawns 1 5 5
-Pawns 1 7 5
-Pawns 1 0 6
-Pawns 1 2 6
-Pawns 1 4 6
-Pawns 1 6 6
-Pawns 1 1 7
-Pawns 1 3 7
-Pawns 1 5 7
-Pawns 1 7 7
+Pawns 0 0 0 0
+Pawns 0 2 0 1
+Pawns 0 4 0 2
+Pawns 0 6 0 3
+Pawns 0 1 1 4
+Pawns 0 3 1 5
+Pawns 0 5 1 6
+Pawns 0 7 1 7
+Pawns 0 0 2 8
+Pawns 0 2 2 9
+Pawns 0 4 2 10
+Pawns 0 6 2 11
+Pawns 1 1 5 12
+Pawns 1 3 5 13
+Pawns 1 5 5 14
+Pawns 1 7 5 16
+Pawns 1 0 6 17
+Pawns 1 2 6 18
+Pawns 1 4 6 19
+Pawns 1 6 6 20
+Pawns 1 1 7 21
+Pawns 1 3 7 22
+Pawns 1 5 7 23
+Pawns 1 7 7 24
 UNITS END

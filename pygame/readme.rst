@@ -10,9 +10,12 @@ About pygame
 
      http://www.pygame.org
 
+|TravisBuild|_ |AppVeyorBuild|_ |LaunchpadBuild|_ |PyPiVersion|_ |PyPiLicense|_ |Python2| |Python3|
 
 Installation
 ============
+
+     pip install pygame
 
      You should definitely begin by installing a binary package for your
      system. The binary packages usually come with or give the
@@ -56,7 +59,7 @@ Credits
      Marcus Von Appen - many changes, and fixes, 1.7.1+ freebsd maintainer.
 
      Lenard Lindstrom - the 1.8+ windows maintainer, many changes, and fixes.
-     
+
      Brian Fisher - for svn auto builder, bug tracker and many contributions.
 
      Rene Dudfield - many changes, and fixes, 1.7+ release manager/maintainer.
@@ -98,22 +101,22 @@ Credits
      James Mazer, Lalo Martins, Timothy Stranex, Chad Lester, Matthias
      Spiller, Bo Jangeborg, Dmitry Borisov, Campbell Barton, Diego Essaya,
      Eyal Lotem, Regis Desgroppes, Emmanuel Hainry, Randy Kaelber
-     Matthew L Daniel, Nirav Patel, Forrest Voight, Charlie Nolan, 
+     Matthew L Daniel, Nirav Patel, Forrest Voight, Charlie Nolan,
      Frankie Robertson, John Krukoff, Lorenz Quack, Nick Irvine,
      Michael George, Saul Spatz, Thomas Ibbotson, Tom Rothamel, Evan Kroske,
      Cambell Barton.
 
      And our bug hunters above and beyond: Angus, Guillaume Proux, Frank
-     Raiser, Austin Henry, Kaweh Kazemi, Arturo Aldama, Mike Mulcheck, 
+     Raiser, Austin Henry, Kaweh Kazemi, Arturo Aldama, Mike Mulcheck,
      Michael Benfield, David Lau
 
      There's many more folks out there who've submitted helpful ideas, kept
      this project going, and basically made my life easer, Thanks!
 
      Many thank you's for people making documentation comments, and adding to the
-     pygame.org wiki.  
-   
-     Also many thanks for people creating games and putting them on the 
+     pygame.org wiki.
+
+     Also many thanks for people creating games and putting them on the
      pygame.org website for others to learn from and enjoy.
 
      Lots of thanks to James Paige for hosting the pygame bugzilla.
@@ -133,7 +136,7 @@ Dependencies
      depends on SDL_image, which also can use libjpeg and libpng. The
      transform module has an embedded version of SDL_rotozoom for its
      own rotozoom function. The surfarray module requires the python
-     Numeric package for its multidimensional numeric arrays.
+     numpy package for its multidimensional numeric arrays.
 
 Todo / Ideas (feel free to submit)
 ==================================
@@ -156,3 +159,27 @@ License
 
      The programs in the "examples" subdirectory are in the public
      domain.
+
+
+
+
+.. |TravisBuild| image:: https://travis-ci.org/illume/pygame.svg?branch=master
+.. _TravisBuild: https://travis-ci.org/illume/pygame
+
+.. |AppVeyorBuild| image:: https://ci.appveyor.com/api/projects/status/d9mypp9f4ubrmqf7?svg=true
+.. _AppVeyorBuild: https://ci.appveyor.com/project/pygame/pygame-temp-m8dun
+
+.. |LaunchpadBuild| image:: http://pygame.org/images/launchpad_build.svg?svg=true
+.. _LaunchpadBuild: https://code.launchpad.net/~pygame/+recipe/pygame-daily
+
+.. |PyPiVersion| image:: https://img.shields.io/pypi/v/pygame.svg?v=1
+.. _PyPiVersion: https://pypi.python.org/pypi/pygame
+
+.. |PyPiLicense| image:: https://img.shields.io/pypi/l/pygame.svg?v=1
+.. _PyPiLicense: https://pypi.python.org/pypi/pygame
+
+.. |Python2| image:: https://img.shields.io/badge/python-2-blue.svg?v=1
+.. |Python3| image:: https://img.shields.io/badge/python-3-blue.svg?v=1
+
+
+

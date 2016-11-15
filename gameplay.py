@@ -14,6 +14,14 @@ class Gameplay(Sprite):
         self.map = TileMap
         self.active_units = active_units
 
+    def get_state(self):
+        state = ""
+  	    # Want to sort the list based on unit id
+        tempList = sorted(self.active_units, key=lambda x: x.id, reverse=False)
+        for i in tempList:
+            state += str(i.team) + " " + i.type + " " + str(i.tile_x) + " " + str(i.tile_y) + " "
+        return state    
+
     def get_unit_at_pos(self, pos):
         """
         Returns the active unit at the given tile position, or None if no 

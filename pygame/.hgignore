@@ -3,7 +3,7 @@ Setup
 *.pyc
 *~
 build
-prebuilt
+prebuilt-x??
 docs/\.buildinfo
 docs/objects.inv
 docs/doctrees/*
@@ -19,3 +19,9 @@ docs/index.html
 docs/ref/*.html
 docs/tut/SpriteIntro.html
 lib/version.py
+envdev*
+.virtualenv*
+manylinux-build/wheelhouse/
+anenv
+dist
+.vagrant

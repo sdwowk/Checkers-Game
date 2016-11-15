@@ -51,6 +51,7 @@ while 1:
                 unitnew = gameplay.get_unit_at_pos((tile_x, tile_y))
                 
                 if not unitnew == None:
+                    print(gameplay.get_state())
                     
                     #This allows gui to outline selected unit
                     main_gui.sel_unit = unitnew
@@ -95,7 +96,6 @@ while 1:
             if path == ["Done"]:
                 path = main_gui.end_turn_processed()
             
- 
 
     if path == ["Over"]:
         main_gui.win_team = main_gui.current_team

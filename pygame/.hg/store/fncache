@@ -1,7 +1,7 @@
 data/examples_pygame/macosx/aliens_app_example/English.lproj/aliens.icns.i
 data/docs/CD.html.i
 data/reST/source/ext/headers.py.i
-data/examples_pygame/moveit.py.i
+data/src/sdl/joystickmod.h.i
 data/reST/source/ref/mask.rst.i
 data/configtest/testdir/bin/SDL.dll.i
 data/src/pixelcopy.doc.i
@@ -12,8 +12,8 @@ data/examples/resources/font.bmp.i
 data/msys_installer.py.i
 data/examples/data/chimp.gif.i
 data/lib/sdlttf/__init__.py.i
-data/src/sdl/joystickmod.h.i
-data/test/font_tags.py.i
+data/examples_pygame/moveit.py.i
+data/docs/ref/pygame_mixer.html.i
 data/test/c_api/physics_tests.c.i
 data/doc/src/sdlimage.xml.i
 data/docs/util/listlate.html.i
@@ -46,7 +46,7 @@ data/test/util/build_page/libs/build_client/config/build_config.template.i
 data/test/run_tests__tests/all_ok/no_assertions__ret_code_of_1__test.py.i
 data/docs/_sources/ref/display.txt.i
 data/doc/src/sdlexttransform.xml.i
-data/src/sdl/event.c.i
+data/examples_pygame/blit_blends.py.i
 data/doc/capi.rst.i
 data/docs/Font.html.i
 data/prebuilt-template/Make32.bat.i
@@ -65,6 +65,7 @@ data/include/pgphysics.h.i
 data/examples/resources/array.bmp.i
 data/examples/logo.bmp.i
 data/examples/sdlgfx/__init__.py.i
+data/manylinux-build/enable-repoforge.sh.i
 data/src/sdl/pixelformat.c.i
 data/pygame/display.py.i
 data/test/pixelarray_test.py.i
@@ -72,7 +73,8 @@ data/test/util/buildpage/callproc.py.i
 data/configtest/test_msys.py.i
 data/docs/tut/allblack.jpg.i
 data/src/pixelarray.doc.i
-data/src/camera.c.i
+data/src/base/basemod.c.i
+data/docs/tut/surfarray/redimg.png.i
 data/docs/reST/ref/surfarray.rst.i
 data/examples/sdl/hello_world.py.i
 data/examples/blend_fill.py.i
@@ -97,6 +99,7 @@ data/examples_pygame/vgrade.py.i
 data/test/c_api/base_tests.c.i
 data/test/run_tests__tests/infinite_loop/__init__.py.i
 data/test/gfxdraw_test.py.i
+data/appveyor/README.rst.i
 data/examples/sdlext/pixelarray.py.i
 data/lib/sprite/collision.py.i
 data/lib/pygame.ico.i
@@ -116,7 +119,6 @@ data/examples_pygame/data/house_lo.wav.i
 data/test/graywin.py.i
 data/test/util/build_page/libs/build_client/test_fixtures/BUILD_FAILED_EXCEPTION.i
 data/obj/win32/scale_mmx.obj.i
-data/examples_pygame/data/alien1.gif.i
 data/test/run_tests__tests/print_stderr/__init__.py.i
 data/src/doc/key_doc.h.i
 data/SDL/cdrom.py.i
@@ -135,6 +137,7 @@ data/docs/_sources/ref/surface.txt.i
 data/docs/pygame_joystick.html.i
 data/docs/_static/comment-bright.png.i
 data/examples/midi.py.i
+data/docs/tut/surfarray/soften.png.i
 data/src/SDL_rotozoom/README.i
 data/src/doc/time_doc.h.i
 data/configtest/testdir/bin/libvorbis-0.dll.i
@@ -147,6 +150,7 @@ data/docs/pygame_display.html.i
 data/examples/macosx/aliens_app_example/English.lproj/MainMenu.nib/keyedobjects.nib.i
 data/reST/source/ext/utils.py.i
 data/test/unittest.py.i
+data/appveyor/install.ps1.i
 data/test/util/build_page/libs/process_results.py.i
 data/test/freetype_tags.py.i
 data/src/_numericsurfarray.c.i
@@ -154,7 +158,7 @@ data/examples/sdl/array.bmp.i
 data/Pygame_Physics.vcproj.i
 data/confighelp.py.i
 data/test/util/support.py.i
-data/pygame/color.py.i
+data/docs/reST/ref/overlay.rst.i
 data/test/sdl_video_surface_blit_test.py.i
 data/src/mask/maskmod.c.i
 data/symbian/SConscript.libpng.py.i
@@ -206,6 +210,7 @@ data/test/util/buildpage/server/results.css.i
 data/doc/src/sdlaudio.xml.i
 data/pygame/pkgdata.py.i
 data/test/test_utils/unittest.py.i
+data/docs/tut/surfarray/xfade.png.i
 data/reST/source/ref/pixelarray.rst.i
 data/reST/source/ref/time.rst.i
 data/setup_win_common.py.i
@@ -213,6 +218,7 @@ data/src/sndarray.c.i
 data/Pygame Physics.sln.i
 data/examples/data/midikeys.png.i
 data/examples/sdlext/__init__.py.i
+data/docs/tut/surfarray/allblack.png.i
 data/lib/ftfont.py.i
 data/reST/source/conf.py.i
 data/Setup_Win_Common.in.i
@@ -260,6 +266,7 @@ data/docs/ref/freetype.html.i
 data/examples_pygame/data/fist.bmp.i
 data/src/pgopengl.h.i
 data/reST/source/ref/math.rst.i
+data/src/freetype/ft_wrap.c.i
 data/test/math_vector2_test.py.i
 data/src/doc/mixer_doc.h.i
 data/lib/sndarray.py.i
@@ -299,7 +306,7 @@ data/pygame/draw.py.i
 data/docs/ref/pygame_sprite.html.i
 data/src/math/vector2.c.i
 data/doc/ref/tests.rst.i
-data/src/freetype/ft_wrap.c.i
+data/examples_pygame/data/alien1.gif.i
 data/src/rwobject.c.i
 data/test/transform_test.py.i
 data/test/util/buildpage/helpers.py.i
@@ -318,6 +325,7 @@ data/test/util/buildpage/regexes.py.i
 data/docs/reST/ref/examples.rst.i
 data/src/sdlmixer/mixermod.h.i
 data/src/font.doc.i
+data/manylinux-build/docker_base/portmidi/build-portmidi.sh.i
 data/configtest/test-sdl-config.i
 data/Pygame Physics.vcproj.FOXSOFT.Fox Cheung.user.i
 data/examples/data/explosion1.gif.i
@@ -363,6 +371,7 @@ data/symbian/lib/constants.py.i
 data/src/sdlext/fasteventmod.c.i
 data/src/sdl/rwopsmod.c.i
 data/src/movie.c.i
+data/test/sysfont_test.py.i
 data/msys.py.i
 data/docs/mainlogo.gif.i
 data/src/openal/buffers.c.i
@@ -441,9 +450,10 @@ data/test/testkeys.py.i
 data/dll.py.i
 data/reST/source/ref/freetype.rst.i
 data/src/doc/freetype_doc.h.i
-data/config_unix.py.i
+data/src/sdlgfx/pggfx.h.i
 data/symbian/app/apps/liquid_s60.py.i
 data/.hgtags.i
+data/appveyor.yml.i
 data/src/sdl/surface_fill.c.i
 data/docs/ref/mask.html.i
 data/src/sdlext/scrap_win.h.i
@@ -471,7 +481,9 @@ data/test/sdl_cursors_test.py.i
 data/doc/src/mathbase.xml.i
 data/test/util/build_page/warnings.php.i
 data/docs/reST/_static/reset.css.i
+data/manylinux-build/docker_base/freetype/build-freetype.sh.i
 data/examples/overlay.py.i
+data/manylinux-build/Makefile.i
 data/lib/sdl/__init__.py.i
 data/win32/Physics.sln.i
 data/pygame/surface.py.i
@@ -496,6 +508,7 @@ data/src/camera.h.i
 data/test/util/build_page/libs/build_client/test_fixtures/TESTS_FAILED.i
 data/docs/_static/minus.png.i
 data/include/pgDeclare.h.i
+data/docs/tut/surfarray/rgbarray.png.i
 data/configtest/testdir/include/SDL/jpeglib.h.i
 data/docs/_static/reset.css.i
 data/docs/reST/ref/locals.rst.i
@@ -517,6 +530,7 @@ data/docs/tut/camera/average.jpg.i
 data/src/sdlgfx/rotozoommod.c.i
 data/docs/ref/time.html.i
 data/examples/camera.py.i
+data/manylinux-build/install-portmidi.sh.i
 data/configtest/readme.txt.i
 data/src/openal/capturedevice.c.i
 data/examples_pygame/macosx/aliens_app_example/English.lproj/MainMenu.nib/classes.nib.i
@@ -639,7 +653,7 @@ data/docs/tut/surfarray/striped.jpg.i
 data/src/base.c.i
 data/src/sdl/cdtrack.c.i
 data/docs/reST/ref/sndarray.rst.i
-data/test/sysfont_test.py.i
+data/manylinux-build/docker_base/freetype/freetype.sha512.i
 data/lib/font.py.i
 data/src/ff_movie.c.i
 data/test/time_test.py.i
@@ -653,6 +667,7 @@ data/src/openal/listener.c.i
 data/docs/tut/surfarray/scaleup.jpg.i
 data/doc/src/pygame2sdlgfx.xml.i
 data/docs/Channel.html.i
+data/manylinux-build/docker_base/libpng/png.sha512.i
 data/examples/oldalien.py.i
 data/build_deps.py.i
 data/test/run_tests.py.i
@@ -680,11 +695,14 @@ data/test/util/build_page/libs/build_client/helpers.py.i
 data/docs/reST/_static/pygame.ico.i
 data/test/image_tags.py.i
 data/src/constants.c.i
+data/docs/tut/surfarray/surfarray.png.i
 data/test/mixer_music_tags.py.i
 data/docs/ref/pygame_mouse.html.i
 data/test/key_test.py.i
 data/examples/macosx/aliens_app_example/pkgdata_nsbundle.py.i
+data/manylinux-build/docker_base/resources/build-portmidi.sh.i
 data/test/testoverlay2.py.i
+data/manylinux-build/docker_base/resources/build-sdl-libs.sh.i
 data/doc/extending.rst.i
 data/docs/_static/comment-close.png.i
 data/docs/_sources/ref/pixelarray.txt.i
@@ -718,6 +736,8 @@ data/lib/midi.py.i
 data/blitting/blittest.py.i
 data/test/mixer_music_test.py.i
 data/test_pygame/display_test.py.i
+data/.travis_osx_after_success.sh.i
+data/examples/playmus.py.i
 data/trackmod/namereg.py.i
 data/test/blit_test.py.i
 data/examples/fonty.py.i
@@ -748,13 +768,16 @@ data/src/_camera.h.i
 data/obj/win64/scale_mmx.obj.i
 data/Setup_win.in.i
 data/test/sdl_video_test.py.i
+data/.travis_osx_install.sh.i
 data/docs/ref/Overlay.html.i
 data/src/scrap_x11.c.i
 data/src/freetype/ft_style.c.i
+data/manylinux-build/docker_base/resources/portmidi.sha512.i
 data/src/sdl/imagemod.c.i
 data/symbian/configure.py.i
 data/reST/tooltip/pygame.css.i
 data/docs/ref/pygame_cdrom.html.i
+data/manylinux-build/docker_base/sdl_libs/sdl.sha512.i
 data/docs/_sources/ref/key.txt.i
 data/docs/tut/flipped.jpg.i
 data/README.TXT.i
@@ -801,6 +824,7 @@ data/test/interop_pil.py.i
 data/src/physics/pgphysics.h.i
 data/examples/data/background.gif.i
 data/src/pygame.doc.i
+data/manylinux-build/docker_base/portmidi/portmidi.sha512.i
 data/test/threads_test.py.i
 data/docs/tut/SurfarrayIntro.html.i
 data/pygame/music.py.i
@@ -811,6 +835,7 @@ data/docs/pygame_key.html.i
 data/docs/tut/chimp.py.html.i
 data/docs/ref/pygame_mixer_music.html.i
 data/test/sdlgfx_base_test.py.i
+data/test/util/buildpage/config/build_config.template.i
 data/docs/ref/locals.html.i
 data/test/sdl_wm_test.py.i
 data/configtest/testdir/bin/smpeg.dll.i
@@ -844,7 +869,9 @@ data/examples_pygame/macosx/aliens_app_example/English.lproj/MainMenu.nib/info.n
 data/examples_pygame/data/car_door.wav.i
 data/examples/sdl/surface_fill.py.i
 data/test/c_api/mask_tests.c.i
+data/manylinux-build/docker_base/libpng/build-png.sh.i
 data/configtest/testdir/lib/libSDL_ttf.dll.a.i
+data/manylinux-build/README.rst.i
 data/test/freetype_font_tags.py.i
 data/test/image__save_gl_surface_test__.py.i
 data/docs/_static/jquery.js.d
@@ -896,8 +923,10 @@ data/examples/macosx/aliens_app_example/aliens.py.i
 data/src/sdl/wmmod.c.i
 data/symbian/common/logmanutils.h.i
 data/test/test_test_.py.i
+data/docs/tut/surfarray/striped.png.i
 data/configtest/testdir/libvorbis-1.2.0/Release/libvorbisfile-3.dll.i
 data/lib/camera.py.i
+data/test/test_utils/test_machinery.py.i
 data/src/image.c.i
 data/src/sdl/surface_blit.c.i
 data/src/scale_mmx64_msvc.c.i
@@ -921,6 +950,7 @@ data/include/pgBodyObject.h.i
 data/src/math/mathmod.c.i
 data/docs/_sources/ref/color.txt.i
 data/doc/api_template.xml.i
+data/manylinux-build/docker_base/fluidsynth/fluidsynth.sha512.i
 data/pygame/sprite.py.i
 data/lib/sndarray.doc.i
 data/docs/reST/ref/joystick.rst.i
@@ -958,7 +988,7 @@ data/config/dll.py.i
 data/docs/ref/pygame_sndarray.html.i
 data/docs/reST/ref/cursors.rst.i
 data/test/util/build_page/libs/build_client/mocks.py.i
-data/src/sdlgfx/pggfx.h.i
+data/config_unix.py.i
 data/test/run_tests__tests/everything/fake_2_test.py.i
 data/SDL/video.py.i
 data/doc/src/openal_constants.rst.i
@@ -970,7 +1000,7 @@ data/docs/_sources/ref/gfxdraw.txt.i
 data/test/util/buildpage/config_config.html.i
 data/src/sdlmixer/musicmod.c.i
 data/setup_sdl.py.i
-data/docs/reST/ref/overlay.rst.i
+data/pygame/color.py.i
 data/pygame/rect.py.i
 data/examples_pygame/data/arraydemo.bmp.i
 data/docs/ref/pixelarray.html.i
@@ -998,6 +1028,7 @@ data/test/cdrom_tags.py.i
 data/src/png.c.i
 data/src/sdlext/scrap_x11.c.i
 data/makeref_from_doc.py.i
+data/manylinux-build/install-sdl-libs.sh.i
 data/test/base_color_test.py.i
 data/examples/pixelarray.py.i
 data/configtest/testdir/SDL_mixer-1.2/Release/SDL_mixer.dll.i
@@ -1010,6 +1041,7 @@ data/src/SDL_gfx/SDL_gfxPrimitives.c.i
 data/src/_gcommand.c.i
 data/examples/macosx/aliens_app_example/English.lproj/MainMenu.nib/_MainMenu_EOArchive_English.java.i
 data/symbian/SConscript.jpeg.py.i
+data/docs/tut/surfarray/flipped.png.i
 data/reST/source/ref/gfxdraw.rst.i
 data/docs/__init__.py.i
 data/examples/scrap_clipboard.py.i
@@ -1056,6 +1088,7 @@ data/src/sdlmixer/channel.c.i
 data/src/midi/pypm.c.i
 data/Pygame_Physics.suo.i
 data/test/util/build_page/index.php.i
+data/manylinux-build/RPM-GPG-KEY.dag.txt.i
 data/docs/_static/tooltip.css.i
 data/doc/src/sdlmixermusic.xml.i
 data/test1.py.i
@@ -1067,6 +1100,7 @@ data/test/util/buildpage/test_fixtures/TESTS_FAILED.i
 data/src/doc/cdrom_doc.h.i
 data/src/openal/sources.c.i
 data/test/run_tests__tests/all_ok/fake_2_test.py.i
+data/test/font_tags.py.i
 data/reST/source/ref/midi.rst.i
 data/src/scale.h.i
 data/test/testwin.py.i
@@ -1075,6 +1109,7 @@ data/configtest/test_config_win.py.i
 data/lib/tests.doc.i
 data/configtest/testdir/jpeg-6b/Release/jpeg.dll.i
 data/examples/sdlgfx/fpsmanager.py.i
+data/appveyor/run_with_compiler.cmd.i
 data/support/make_constants.py.i
 data/examples/data/house_lo.mp3.i
 data/config/config_darwin.py.i
@@ -1093,6 +1128,7 @@ data/docs/reST/ext/utils.py.i
 data/src/sdlext/sdlextmod.h.i
 data/src/surface_fill.c.i
 data/include/pgVector2.h.i
+data/manylinux-build/docker_base/sdl_libs/build-sdl-libs.sh.i
 data/src/doc/music_doc.h.i
 data/test/run_tests__tests/failures1/__init__.py.i
 data/src/pypm.c.i
@@ -1157,12 +1193,13 @@ data/src/fastevent.c.i
 data/src/bitmask.h.i
 data/src/pgpng.h.i
 data/test/util/buildpage/server/results.php.i
+data/manylinux-build/docker_base/Dockerfile-x86_64.i
 data/test/__movie_test.py.i
 data/lib/camera_opencv_highgui.py.i
 data/test/run_tests__tests/all_ok/no_assertions(ret_code_of_1)_test.py.i
 data/reST/source/ref/mouse.rst.i
 data/include/pgHelpFunctions.h.i
-data/SDL/sound.py.i
+data/manylinux-build/portmidi.sha512.i
 data/src/math.c.i
 data/docs/_static/pygments.css.i
 data/docs/_sources/ref/joystick.txt.i
@@ -1197,7 +1234,7 @@ data/lib/sdlmixer/sndarray.py.i
 data/Pygame_Physics.sln.i
 data/SDL/__init__.py.i
 data/docs/reST/tut/newbieguide.rst.i
-data/docs/ref/pygame_mixer.html.i
+data/manylinux-build/docker_base/fluidsynth/build-fluidsynth.sh.i
 data/docs/reST/ref/mixer.rst.i
 data/src/pgdefines.h.i
 data/lib/_numpysndarray.py.i
@@ -1207,7 +1244,7 @@ data/msysio.py.i
 data/pygame/time.py.i
 data/examples/resources/house_lo.wav.i
 data/test/fixtures/fonts/PyGameMono-8.bdf.i
-data/src/base/basemod.c.i
+data/src/camera.c.i
 data/test/run_tests__tests/exclude/invisible_tag_test.py.i
 data/src/freetype/pgfreetype.h.i
 data/docs/util/doclate.html.i
@@ -1279,6 +1316,7 @@ data/docs/ref/examples.html.i
 data/reST/make.bat.i
 data/reST/source/ref/surfarray.rst.i
 data/docs/tut/DisplayModes.html.i
+data/manylinux-build/docker_base/libwebp/webp.sha512.i
 data/test/draw_test.py.i
 data/docs/ref/surfarray.html.i
 data/docs/tut/tom/games4.html.i
@@ -1292,9 +1330,11 @@ data/doc/src/freetype_constants.rst.i
 data/docs/pygame.html.i
 data/doc/src/midibase.xml.i
 data/docs/pygame_tiny.gif.i
+data/.travis_osx_before_install.sh.i
 data/lib/threadmap.py.i
 data/examples/sdl/draw.py.i
 data/examples/aliens.py.i
+data/manylinux-build/build-wheels.sh.i
 data/lib/__init__.py.i
 data/lib/locals.doc.i
 data/src/scale_mmx64.c.i
@@ -1306,6 +1346,7 @@ data/docs/reST/filepaths.rst.i
 data/docs/ref/pygame_joystick.html.i
 data/MANIFEST.in.i
 data/src/pygame.h.i
+data/examples/prevent_display_stretching.py.i
 data/src/CPS.h.i
 data/docs/_sources/ref/scrap.txt.i
 data/src/_ff_all.h.i
@@ -1335,7 +1376,7 @@ data/docs/tut/ImportInit.html.i
 data/include/pgAABBBox.h.i
 data/modules.py.i
 data/examples/data/chimp.bmp.i
-data/test/util/buildpage/config/build_config.template.i
+data/manylinux-build/sdl.sha512.i
 data/doc/src/sdlmixerchannel.xml.i
 data/docs/reST/ref/font.rst.i
 data/src/pixelcopy.c.i
@@ -1372,6 +1413,7 @@ data/reST/source/ref/camera.rst.i
 data/src/freetype/ft_render_cb.c.i
 data/test/joystick_test.py.i
 data/lib/gp2x/locals.py.i
+data/manylinux-build/docker_base/resources/sdl.sha512.i
 data/trackmod/importer.py.i
 data/docs/tut/intro/freedom.jpg.i
 data/src/sdlgfx/gfxmod.h.i
@@ -1507,7 +1549,7 @@ data/test/sdl_event_test.py.i
 data/docs/ref/pygame_music.html.i
 data/docs/tut/SpriteIntro.html.i
 data/Document/ToDoList.txt.i
-data/examples_pygame/blit_blends.py.i
+data/src/sdl/event.c.i
 data/src/physics/physicsmod.c.i
 data/examples/freetype/sdlfont.py.i
 data/reST/source/ref/surface.rst.i
@@ -1633,14 +1675,17 @@ data/examples/sdl/pixelarray.py.i
 data/examples_pygame/data/liquid.bmp.i
 data/doc/src/pygame2sdl.xml.i
 data/docs/tut/tom/MakeGames.html.i
+data/.travis_osx.sh.i
 data/doc/capi/sdlgfx.rst.i
 data/doc/src/pygame2sdlimage.xml.i
+data/manylinux-build/docker_base/flac/flac.sha512.i
 data/pygame/mixer.py.i
 data/src/_gsound.h.i
 data/test/util/build_page/results/results.css.i
 data/Default_Setup_Win.in.i
 data/src/sdlext/draw.c.i
 data/docs/search.html.i
+data/SDL/sound.py.i
 data/src/math/mathmod.h.i
 data/test/rwobject_test.py.i
 data/reST/source/ref/color.rst.i
@@ -1660,6 +1705,7 @@ data/docs/tut/chimp/ChimpLineByLine.html.i
 data/reST/source/themes/classic/theme.conf.i
 data/docs/ref/index.html.i
 data/doc/src/pygame2midi.xml.i
+data/manylinux-build/docker_base/Dockerfile-i686.i
 data/doc/src/base.xml.i
 data/pygame/font.py.i
 data/src/_gmovie.h.i
@@ -1686,6 +1732,7 @@ data/docs/ref/tests.html.i
 data/test/run_tests__tests/print_stdout/fake_4_test.py.i
 data/src/sdlext/scrap_x11.h.i
 data/src/freetype/ft_mod.h.i
+data/docs/tut/surfarray/scaleup.png.i
 data/docs/ref/pygame_image.html.i
 data/trackmod/__init__.py.i
 data/trackmod/loader.py.i
@@ -1714,6 +1761,7 @@ data/src/SDL_rotozoom/SDL_rotozoom.c.i
 data/docs/install.txt.i
 data/symbian/SConscript.sft2.py.i
 data/dbapi20.py.i
+data/docs/tut/surfarray/scaledown.png.i
 data/docs/reST/ref/draw.rst.i
 data/src/SDLmain.m.i
 data/docs/_sources/ref/cursors.txt.i
@@ -1722,6 +1770,7 @@ data/docs/_sources/ref/math.txt.i
 data/lib/sprite/layeredgroups.py.i
 data/setup_pygame.py.i
 data/src/rotozoom.c.i
+data/manylinux-build/docker_base/RPM-GPG-KEY.dag.txt.i
 data/examples/data/blue.mpg.i
 data/src/cdrom.c.i
 data/doc/src/openalbase.xml.i
@@ -1738,6 +1787,7 @@ data/doc/tutorial/helloworld.rst.i
 data/.travis.yml.i
 data/docs/tut/surfarray/redimg.jpg.i
 data/test/threads_tags.py.i
+data/manylinux-build/docker_base/libwebp/build-webp.sh.i
 data/lib/sdlgfx/__init__.py.i
 data/test/test_fixed.otf.i
 data/examples_pygame/testsprite.py.i
@@ -1749,7 +1799,9 @@ data/docs/_sources/ref/pygame.txt.i
 data/src/cdrom.doc.i
 data/lib/Py25Queue.py.i
 data/unit/video.py.i
+data/.travis_osx_upload_whl.py.i
 data/install.html.i
+data/manylinux-build/docker_base/flac/build-flac.sh.i
 data/lib/threads/Py25Queue.py.i
 data/configtest/testdir/libvorbis-1.2.0/Release/libvorbis-0.dll.i
 data/docs/ref/event.html.i

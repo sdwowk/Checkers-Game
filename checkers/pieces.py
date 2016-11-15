@@ -12,7 +12,7 @@ class Pieces(Sprite):
     active_units = pygame.sprite.LayeredUpdates()
 
     #check if we need angle
-    def __init__(self, team = -1, tile_x = None, tile_y = None, activate = False):
+    def __init__(self, team = -1, tile_x = None, tile_y = None, activate = False, id = -1):
         Sprite.__init__(self)
         #Default values to assign to later
         self.team = team
@@ -24,6 +24,7 @@ class Pieces(Sprite):
         self._moving = False
         self._active = False
         self._path = []
+        self.id = id
         #changed, check if allowed
         self.turn_state = [False]
 

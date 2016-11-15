@@ -33,7 +33,7 @@ You can find where the example files are installed by using the following
 commands inside the python interpreter.
 
 ::
-    
+
    >>> import pygame.examples.scaletest
    >>> pygame.examples.scaletest.__file__
    '/usr/lib/python2.6/site-packages/pygame/examples/scaletest.py'
@@ -178,10 +178,8 @@ pygame much earlier.
    surfarray and image modules to be installed. This little demo can also make
    a good starting point for any of your own tests with surfarray
 
-   If arraytype is provided then use that array package. Valid values are
-   'numeric' or 'numpy'. Otherwise default to NumPy, or fall back on Numeric if
-   NumPy is not installed. As a program ``surfarray.py`` accepts an optional
-   --numeric or --numpy flag. (New pygame 1.9.0)
+   The ``arraytype`` parameter is deprecated; passing any value besides 'numpy'
+   will raise ValueError.
 
    .. ## pygame.examples.arraydemo.main ##
 
@@ -204,15 +202,13 @@ pygame much earlier.
    | :sl:`play various sndarray effects`
    | :sg:`sound_array_demos.main(arraytype=None) -> None`
 
-   If arraytype is provided then use that array package. Valid values are
-   'numeric' or 'numpy'. Otherwise default to NumPy, or fall back on Numeric if
-   NumPy is not installed.
 
-   Uses sndarray and NumPy ( or Numeric) to create offset faded copies of the
+   Uses sndarray and NumPy to create offset faded copies of the
    original sound. Currently it just uses hardcoded values for the number of
-   echos and the delay. Easy for you to recreate as needed. Run as a program
-   ``sound_array_demos.py`` takes an optional command line option, --numpy or
-   --numeric, specifying which array package to use.
+   echos and the delay. Easy for you to recreate as needed.
+
+   The ``arraytype`` parameter is deprecated; passing any value besides 'numpy'
+   will raise ValueError.
 
    .. ## pygame.examples.sound_array_demos.main ##
 
@@ -453,8 +449,9 @@ pygame much earlier.
    | :sg:`scroll.main(image_file=None) -> None`
 
    This example shows a scrollable image that has a zoom factor of eight. It
-   uses the :func:`Surface.scroll` function to shift the image on the display
-   surface. A clip rectangle protects a margin area. If called as a function,
+   uses the :meth:`Surface.scroll() <pygame.Surface.scroll>`
+   function to shift the image on the display surface.
+   A clip rectangle protects a margin area. If called as a function,
    the example accepts an optional image file path. If run as a program it
    takes an optional file path command line argument. If no file is provided a
    default image file is used.
@@ -465,22 +462,6 @@ pygame much earlier.
 
    .. ## pygame.examples.scroll.main ##
 
-.. function:: movieplayer.main
-
-   | :sl:`play an MPEG movie`
-   | :sg:`movieplayer.main(filepath) -> None`
-
-   A simple movie player that plays an ``MPEG`` movie in a Pygame window. It
-   showcases the :mod:`pygame.movie` module. The window adjusts to the size of
-   the movie image. It is given a border to demonstrate that a movie can play
-   autonomously in a sub- window. Also, the file is copied to a file like
-   object to show that not just Python files can be used as a movie source.
-
-   The :mod:`pygame.movie` module is problematic and may not work on all
-   systems. It is intended to replace it with an ffmpeg based version.
-
-   .. ## pygame.examples.movieplayer.main ##
-
 .. function:: camera.main
 
    | :sl:`display video captured live from an attached camera`
@@ -490,5 +471,15 @@ pygame much earlier.
    the system.
 
    .. ## pygame.examples.camera.main ##
+
+.. function:: playmus.main
+
+   | :sl:`play an audio file`
+   | :sg:`playmus.main(file_path) -> None`
+
+   A simple music player with window and keyboard playback control. Playback can
+   be paused and rewound to the beginning.
+
+   .. ## pygame.examples.playmus.main ##
 
 .. ## pygame.examples ##

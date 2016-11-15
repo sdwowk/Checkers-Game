@@ -10,15 +10,12 @@ SDL = -I/usr/X11R6/include -I/usr/include/SDL -D_REENTRANT -L/usr/lib/x86_64-lin
 FONT = -I/usr/include/SDL -L/usr/lib/x86_64-linux-gnu  -lSDL_ttf
 IMAGE = -I/usr/include/SDL -L/usr/lib/x86_64-linux-gnu  -lSDL_image
 MIXER = -I/usr/include/SDL -L/usr/lib/x86_64-linux-gnu  -lSDL_mixer
-SMPEG = -I/usr/include/smpeg -I/usr/include/SDL -D_REENTRANT -L/usr/lib/x86_64-linux-gnu -lsmpeg -L/usr/lib/x86_64-linux-gnu -lSDL 
 PNG = -I/usr/include -L/usr/lib/x86_64-linux-gnu  -lpng
 JPEG = -I/usr/include -L/usr/lib/x86_64-linux-gnu  -ljpeg
 SCRAP = -L/usr/lib/x86_64-linux-gnu  -lX11
-PORTMIDI = -I/usr/include -L/usr/lib/x86_64-linux-gnu  -lportmidi
-PORTTIME = -I/usr/include -L/usr/lib/x86_64-linux-gnu  -lporttime
-AVFORMAT = -I/usr/include -L/usr/lib/x86_64-linux-gnu  -lavformat
-SWSCALE = -I/usr/include -L/usr/lib/x86_64-linux-gnu  -lswscale
-FREETYPE = -lfreetype
+PORTMIDI = -I/usr/include -L/usr/lib  -lportmidi
+PORTTIME = -I/usr/include -L/usr/lib  -lporttime
+FREETYPE = -I/usr/include/freetype2 -lfreetype 
 
 DEBUG = 
 
@@ -30,10 +27,6 @@ imageext src/imageext.c $(SDL) $(IMAGE) $(PNG) $(JPEG) $(DEBUG)
 font src/font.c $(SDL) $(FONT) $(DEBUG)
 mixer src/mixer.c $(SDL) $(MIXER) $(DEBUG)
 mixer_music src/music.c $(SDL) $(MIXER) $(DEBUG)
-_numericsurfarray src/_numericsurfarray.c $(SDL) $(DEBUG)
-_numericsndarray src/_numericsndarray.c $(SDL) $(MIXER) $(DEBUG)
-#movie src/movie.c $(SDL) $(SMPEG) $(DEBUG)
-#_movie src/_gsound.c src/_gmovie.c src/_gcommand.c src/gmovie.c $(SDL) $(AVFORMAT) $(SWSCALE) $(MIXER) $(DEBUG)
 scrap src/scrap.c $(SDL) $(SCRAP) $(DEBUG)
 pypm src/pypm.c $(SDL) $(PORTMIDI) $(PORTTIME) $(DEBUG)
 
@@ -43,7 +36,7 @@ gfxdraw src/gfxdraw.c $(SDL) $(GFX) $(DEBUG)
 
 #optional freetype module (do not break in multiple lines
 #or the configuration script will choke!)
-#_freetype src/freetype/ft_cache.c src/freetype/ft_wrap.c src/freetype/ft_render.c  src/freetype/ft_render_cb.c src/freetype/ft_layout.c src/freetype/ft_unicode.c src/_freetype.c $(SDL) $(FREETYPE) $(DEBUG)
+_freetype src/freetype/ft_cache.c src/freetype/ft_wrap.c src/freetype/ft_render.c  src/freetype/ft_render_cb.c src/freetype/ft_layout.c src/freetype/ft_unicode.c src/_freetype.c $(SDL) $(FREETYPE) $(DEBUG)
 
 #these modules are required for pygame to run. they only require
 #SDL as a dependency. these should not be altered

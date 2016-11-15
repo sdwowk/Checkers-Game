@@ -236,8 +236,9 @@ class GUI(LayeredUpdates):
             unit_name = line[0]
             unit_team = int(line[1])
             unit_x, unit_y = int(line[2]), int(line[3])
+            unit_id = int(line[4])
             
-            new_unit.append((unit_team,unit_x, unit_y, True))
+            new_unit.append((unit_team,unit_x, unit_y, True, unit_id))
                         
             line = map_file.readline()
             if line == "":
