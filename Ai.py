@@ -1,4 +1,4 @@
-import tiles, pygame, sys, random
+import tiles, pygame, sys, random, os.path, sqlite3
 from Gui import GUI
 from checkers.pieces import *
 from gameplay import *
@@ -37,6 +37,14 @@ class SmartAI:
         self.active_units = Game.active_units
         self.team = 1
         self.game = Game
+        if(os.path.exists("MonteCarlo.db")):
+            self.connection = sqlite3.connect("MonteCarlo.db")
+            self.cursor = self.connection.cursor()
+        else:
+            db = open("MonteCarlo.db", "w+")
+            db.close()
+            self.connection = sqlite3.connect("MonteCarlo.db")
+            self.cursor = self.connection.cursor()
 
     def move(self):
         team_units = []
