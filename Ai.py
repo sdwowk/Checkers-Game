@@ -37,15 +37,7 @@ class SmartAI:
         self.active_units = Game.active_units
         self.team = 1
         self.game = Game
-        if(os.path.exists("MonteCarlo.db")):
-            self.connection = sqlite3.connect("MonteCarlo.db")
-            self.cursor = self.connection.cursor()
-        else:
-            db = open("MonteCarlo.db", "w+")
-            db.close()
-            self.connection = sqlite3.connect("MonteCarlo.db")
-            self.cursor = self.connection.cursor()
-            self.setupDatabase()
+
 
     def move(self):
         team_units = []
@@ -168,6 +160,7 @@ class SmartAI:
         team_units = self.move()
         for i in team_units:
             memo[i] = self.game.set_path(i.position)
+            print(memo[i])
         
         bad_moves = {}
         med_moves = {}
@@ -250,6 +243,8 @@ class SmartAI:
         currentPosition = position
         
         return (currentPosition[0]-1,currentPosition[1]-1)
+
+
 
 
 class MonteCarlo:
@@ -394,68 +389,35 @@ class MonteCarlo:
         team_units = self.move()
         for i in team_units:
             memo[i] = self.game.set_path(i.position)
+            
+
+        find_next_state()
+
+
+        if team_units == []:
+            path = ["Over"]
+            unit = None
+            return unit, path
         
-        bad_moves = {}
-        med_moves = {}
-        good_moves = {}
+        return unit, maxpath
 
-        for (k,v) in memo.items():
-            vulnerable, counter_jump = self.vulnerable(v, k)
-            if v == [] or vulnerable == True:
-                if counter_jump:
-                    med_moves[k] = v
-                else:
-                    bad_moves[k] = v
-            else:
-                good_moves[k] = v
+    def find_next_state(memo):
+        currentState = self.game.get_state()
 
-        if good_moves:
-            maxpath = []
-            unit = 0
-            for k,v in good_moves.items():
-                if len(v) > len(maxpath):
-                    maxpath = v
-                    unit = k
-                elif len(v) == len(maxpath):
-                    x = [maxpath,v]
-                    maxpath = random.choice(x)
-                    if v == maxpath:
-                        unit = k
-            print("good")
-            return  unit, maxpath
-        elif med_moves:
-            maxpath = []
-            unit = 0
-            for k,v in med_moves.items():
-                if len(v) > len(maxpath):
-                    maxpath = v
-                    unit = k
-                elif len(v) == len(maxpath):
-                    x = [maxpath, v]
-                    maxpath = random.choice(x)
-                    if v == maxpath:
-                        unit = k
-            print("med")
-            return unit, maxpath
-        else:
-            maxpath = []
-            unit = 0
-            for k,v in bad_moves.items():
-                if len(v) > len(maxpath):
-                    maxpath = v
-                    unit = k
-                elif len(v) == len(maxpath):
-                    x = [maxpath,v]
-                    maxpath = random.choice(x)
-                    if v == maxpath:
-                        unit = k
-                    
-            if maxpath == []:
-                path = ["Over"]
-                unit = None
-                return unit, path
-            print("bad")
-            return unit, maxpath
+        get_probabilities(currentState, memo)
+
+    def get_probabilitities(currentState, memo):
+        probability_dict = {}
+        for k, v in memo:
+            # For every pawn in memo replace it's current state with a new state. 
+            # Find the probability of success for each new possible state
+            lastState = currentState
+            pawnState = str(k.team) + " " + k.type + " " + str(k.tile_x) + " " + str(k.tile_y)
+            for i in v:
+                newState = str(k.team) + " " + k.type + " " + str(i[0]) + " " + str(i[1])
+                lastState.replace(pawnState, newState)
+                probability_dict[k]
+
 
     def getUpRightPos(self, position):
         currentPosition = position
